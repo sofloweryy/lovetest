@@ -32,7 +32,7 @@ body {
   flex-direction: column;
   align-items: center;
   min-height: 100vh;
-  padding: 0px 16px 24px 16px;
+  padding: 12px 16px 24px 16px;
   position: relative;
   overflow-x: hidden;
 }
@@ -41,11 +41,12 @@ body {
   position: relative;
   width: 100%;
   max-width: 500px;
-  height: 20px;
+  height: 14px; /* 减小高度，让顶部更紧凑 */
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 12px;
+  margin-bottom: -4px; /* 微微上提，缩小与下方卡片的空隙 */
   pointer-events: none;
 }
 
@@ -536,7 +537,7 @@ button.submit-btn:active { transform: scale(0.98); }
       type: 'ENTJ 指挥官', zodiac: '狮子座',
       desc0: '兼具果断执行力与王者般的掌控力，做事雷厉风行且自带不容忽视的强大气场。',
       desc1: '强强联手的极致思维碰撞：在精神层面上拥有极高契合度，彼此欣赏并能并肩作战。',
-      desc2: '避免在讨论或争论时过于较真输赢，给彼此留出足够的温柔空间与情绪缓冲。',
+      desc2: '避免在讨论 or 争论时过于较真输赢，给彼此留出足够的温柔空间与情绪缓冲。',
       desc3: '一起探索一个全新领域的硬核知识，或者享受一次高品质的深度长谈。'
     },
     'ENTJ': {
