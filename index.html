@@ -1,775 +1,205 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>💖 测测命中另一半的星座与MBTI</title>
-<!-- 引入 Supabase 客户端 SDK -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<style>
-:root {
-  --primary-gradient: linear-gradient(135deg, #ff758f 0%, #ff4d6d 100%);
-  --bg-gradient: linear-gradient(135deg, #fff0f3 0%, #f3e8ff 100%);
-  --card-bg: #ffffff;
-  --text-main: #2b2d42;
-  --text-sub: #8d99ae;
-  --accent-bg: #fff5f7;
-  --border-color: #ffccd5;
-}
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  -webkit-tap-highlight-color: transparent;
-}
-
-body {
-  background: var(--bg-gradient);
-  color: var(--text-main);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-height: 100vh;
-  padding: 8px 16px 32px 16px;
-  position: relative;
-  overflow-x: hidden;
-}
-
-.romantic-header-art {
-  position: relative;
-  width: 100%;
-  max-width: 500px;
-  height: 32px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 12px;
-  pointer-events: none;
-}
-
-.art-heart {
-  width: 10px;
-  height: 10px;
-  background: #ff4d6d;
-  transform: rotate(45deg);
-  position: relative;
-  animation: pulseGlow 2s ease-in-out infinite alternate;
-  opacity: 0.7;
-}
-
-.art-heart::before,
-.art-heart::after {
-  content: '';
-  width: 10px;
-  height: 10px;
-  background: #ff4d6d;
-  border-radius: 50%;
-  position: absolute;
-}
-
-.art-heart::before { left: -5px; top: 0; }
-.art-heart::after { left: 0; top: -5px; }
-
-.art-star {
-  width: 12px;
-  height: 12px;
-  background: #ffb703;
-  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
-  animation: starTwinkle 1.5s ease-in-out infinite alternate;
-  opacity: 0.8;
-}
-
-.art-bubble {
-  width: 16px;
-  height: 10px;
-  background: #ff758f;
-  border-radius: 6px;
-  position: relative;
-  opacity: 0.5;
-  animation: floatUp 3s ease-in-out infinite alternate;
-}
-
-.art-bubble::after {
-  content: '';
-  position: absolute;
-  bottom: -3px;
-  left: 4px;
-  width: 0;
-  height: 0;
-  border-left: 3px solid transparent;
-  border-right: 3px solid transparent;
-  border-top: 4px solid #ff758f;
-}
-
-@keyframes pulseGlow {
-  0% { transform: rotate(45deg) scale(0.9); opacity: 0.5; }
-  100% { transform: rotate(45deg) scale(1.15); opacity: 0.85; }
-}
-
-@keyframes starTwinkle {
-  0% { transform: scale(0.8) rotate(0deg); opacity: 0.4; }
-  100% { transform: scale(1.1) rotate(15deg); opacity: 0.9; }
-}
-
-@keyframes floatUp {
-  0% { transform: translateY(2px); }
-  100% { transform: translateY(-3px); }
-}
-
-.main-content {
-  width: 100%;
-  max-width: 500px;
-}
-
-.quiz-card {
-  background: #ffffff;
-  border-radius: 20px;
-  padding: 22px;
-  box-shadow: 0 15px 35px rgba(255, 77, 109, 0.12);
-  border: 2px solid #ffe5e9;
-  position: relative;
-}
-
-h1 {
-  font-size: 22px;
-  background: var(--primary-gradient);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin-bottom: 6px;
-  text-align: center;
-  font-weight: 900;
-  letter-spacing: 0.5px;
-}
-
-p.subtitle {
-  font-size: 13px;
-  color: var(--text-sub);
-  margin-bottom: 20px;
-  text-align: center;
-  font-weight: 500;
-}
-
-.form-group {
-  margin-bottom: 18px;
-  text-align: left;
-}
-
-label.question-title {
-  display: block;
-  font-size: 14.5px;
-  font-weight: 700;
-  margin-bottom: 8px;
-  color: var(--text-main);
-  line-height: 1.4;
-}
-
-select {
-  width: 100%;
-  padding: 12px;
-  border: 1.5px solid var(--border-color);
-  border-radius: 12px;
-  background-color: var(--accent-bg);
-  font-size: 14px;
-  color: var(--text-main);
-  outline: none;
-  font-weight: 600;
-}
-
-.radio-group {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.radio-label {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 14px;
-  background-color: var(--accent-bg);
-  border: 1.5px solid var(--border-color);
-  border-radius: 12px;
-  cursor: pointer;
-  font-size: 13.5px;
-  color: #4a4e69;
-  transition: all 0.2s;
-  font-weight: 500;
-  line-height: 1.4;
-}
-
-.radio-label:hover {
-  background-color: #ffe3e8;
-  border-color: #ff758f;
-}
-
-.radio-label input {
-  accent-color: #ff4d6d;
-  transform: scale(1.2);
-}
-
-button.submit-btn {
-  width: 100%;
-  padding: 16px;
-  background: var(--primary-gradient);
-  color: #fff;
-  border: none;
-  border-radius: 14px;
-  font-size: 17px;
-  font-weight: bold;
-  cursor: pointer;
-  margin-top: 10px;
-  box-shadow: 0 6px 20px rgba(255, 77, 109, 0.35);
-  letter-spacing: 1px;
-}
-
-button.submit-btn:active { transform: scale(0.98); }
-
-#result {
-  margin-top: 10px;
-  display: none;
-}
-
-.share-card {
-  background: #ffffff;
-  border-radius: 20px;
-  padding: 22px;
-  box-shadow: 0 15px 35px rgba(255, 77, 109, 0.15);
-  border: 2px solid #ffe5e9;
-  position: relative;
-}
-
-.poster-header {
-  text-align: center;
-  margin-bottom: 16px;
-  padding-bottom: 14px;
-  border-bottom: 1.5px dashed var(--border-color);
-}
-
-.poster-tag {
-  display: inline-block;
-  background: var(--primary-gradient);
-  color: #fff;
-  padding: 4px 14px;
-  border-radius: 18px;
-  font-size: 11.5px;
-  font-weight: 800;
-  margin-bottom: 10px;
-}
-
-.user-badge {
-  font-size: 13px;
-  color: var(--text-sub);
-  margin-bottom: 6px;
-  font-weight: 500;
-}
-
-.user-badge span { color: #ff4d6d; font-weight: bold; }
-
-.match-target {
-  font-size: 18px;
-  color: var(--text-main);
-  font-weight: 900;
-  line-height: 1.4;
-}
-
-.match-target-highlight {
-  color: #ff4d6d;
-  font-size: 21px;
-  display: block;
-  margin-top: 4px;
-}
-
-.score-badge {
-  background: var(--accent-bg);
-  border: 1.5px solid #ffccd5;
-  border-radius: 12px;
-  padding: 10px;
-  text-align: center;
-  margin-bottom: 16px;
-}
-
-.score-num { font-size: 24px; font-weight: 900; color: #ff4d6d; }
-.score-sub { font-size: 12px; color: var(--text-sub); font-weight: 600; margin-top: 2px; }
-
-.analysis-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-bottom: 18px;
-}
-
-.analysis-item {
-  background: #fff8f9;
-  border-left: 4px solid #ff4d6d;
-  border-radius: 0 12px 12px 0;
-  padding: 12px 14px;
-}
-
-.item-title { font-size: 13.5px; font-weight: 800; color: #ff4d6d; margin-bottom: 4px; }
-.item-desc { font-size: 13px; line-height: 1.5; color: #4a4e69; font-weight: 500; }
-
-.poster-footer {
-  padding-top: 14px;
-  border-top: 1.5px solid #f0f0f5;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.footer-brand .brand-name { font-size: 12px; font-weight: bold; color: var(--text-main); }
-.footer-brand .brand-sub { font-size: 10px; color: #aaa; }
-
-.contact-btn {
-  background: linear-gradient(135deg, #ff758f 0%, #ff4d6d 100%);
-  color: #fff;
-  font-size: 11.5px;
-  padding: 6px 14px;
-  border-radius: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  border: none;
-  box-shadow: 0 3px 10px rgba(255, 77, 109, 0.3);
-  display: inline-flex;
-  align-items: center;
-  gap: 3px;
-  white-space: nowrap;
-}
-
-.qr-modal {
-  display: none;
-  position: fixed;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
-  background: rgba(0, 0, 0, 0.65);
-  backdrop-filter: blur(5px);
-  z-index: 9999;
-  justify-content: center;
-  align-items: center;
-}
-
-.qr-card {
-  background: #fff;
-  padding: 28px 24px;
-  border-radius: 20px;
-  text-align: center;
-  width: 85%;
-  max-width: 310px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-}
-
-.qr-card h3 { font-size: 17px; color: #2b2d42; margin-bottom: 6px; }
-.qr-card p { font-size: 12.5px; color: #8d99ae; margin-bottom: 16px; }
-
-.wechat-box {
-  background: #fff0f3;
-  border: 1.5px dashed #ff4d6d;
-  color: #ff4d6d;
-  font-size: 17px;
-  font-weight: 900;
-  padding: 12px;
-  border-radius: 12px;
-  margin-bottom: 14px;
-  user-select: all;
-}
-
-.close-btn {
-  background: var(--primary-gradient);
-  color: #fff;
-  border: none;
-  padding: 13px 24px;
-  border-radius: 14px;
-  font-weight: bold;
-  font-size: 14.5px;
-  cursor: pointer;
-  width: 100%;
-  box-shadow: 0 5px 15px rgba(255, 77, 109, 0.35);
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>星座与 MBTI · 双重恋爱基因测算</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: #fceef3;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .container {
+      background: #ffffff;
+      width: 100%;
+      max-width: 480px;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+      padding: 24px;
+      box-sizing: border-box;
+      text-align: center;
+    }
+    .header-tag {
+      background: linear-gradient(135deg, #ff758c, #ff7eb3);
+      color: white;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 14px;
+      display: inline-block;
+      margin-bottom: 16px;
+      font-weight: bold;
+    }
+    .subtitle {
+      color: #666;
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+    .main-title {
+      color: #ff4d79;
+      font-size: 22px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+    .box {
+      border: 2px solid #ffb6c1;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 20px;
+      background-color: #fff9fb;
+    }
+    .score-box {
+      border: 2px solid #ff758c;
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 20px;
+      background: linear-gradient(180deg, #ffffff, #fff0f3);
+    }
+    .score-num {
+      font-size: 36px;
+      font-weight: bold;
+      color: #ff3366;
+      margin: 8px 0;
+    }
+    .section-card {
+      background: #fafafa;
+      border-radius: 10px;
+      padding: 12px 16px;
+      margin-bottom: 12px;
+      text-align: left;
+      border-left: 4px solid #ff758c;
+    }
+    .section-card-title {
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 4px;
+      font-size: 14px;
+    }
+    .section-card-content {
+      color: #555;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+    .footer-note {
+      font-size: 11px;
+      color: #999;
+      margin-top: 15px;
+    }
+  </style>
 </head>
 <body>
 
-<div class="romantic-header-art">
-  <div class="art-heart"></div>
-  <div class="art-bubble"></div>
-  <div class="art-star"></div>
-  <div class="art-heart"></div>
-</div>
+  <div class="container" id="app">
+    <!-- 头部标识 -->
+    <div>
+      <span class="header-tag">🔮 星座与 MBTI · 双重恋爱基因测算</span>
+    </div>
+    
+    <div class="subtitle">我的性格：<span id="userPersona" style="font-weight:bold; color:#333;">ESTP × 白羊座</span></div>
+    <div class="main-title">命中注定另一半</div>
 
-<div class="main-content" id="mainContainer">
-  <div id="loadingView" style="text-align: center; padding: 40px 0;">
-    <p style="color: #ff4d6d; font-size: 15px; font-weight: bold;">正在校验专属测算链接...</p>
-  </div>
-
-  <div id="contentView" style="display: none;">
-    <div class="quiz-card" id="quizSection">
-      <h1>💖 测测命中另一半的星座与MBTI</h1>
-      <p class="subtitle">仅供娱乐，如不雷同概不负责（嘿嘿😁</p>
-
-      <div class="form-group">
-        <label class="question-title">你的初始 MBTI 类型：</label>
-        <select id="mbti">
-          <option value="" disabled selected style="color: #999;">请选择你的 MBTI 类型</option>
-          <option value="INTJ">INTJ 建筑师</option>
-          <option value="INTP">INTP 逻辑学家</option>
-          <option value="ENTJ">ENTJ 指挥官</option>
-          <option value="ENTP">ENTP 辩论家</option>
-          <option value="INFJ">INFJ 提倡者</option>
-          <option value="INFP">INFP 调停者</option>
-          <option value="ENFJ">ENFJ 主人公</option>
-          <option value="ENFP">ENFP 竞选者</option>
-          <option value="ISTJ">ISTJ 物流师</option>
-          <option value="ISFJ">ISFJ 守卫者</option>
-          <option value="ESTJ">ESTJ 总经理</option>
-          <option value="ESFJ">ESFJ 执政官</option>
-          <option value="ISTP">ISTP 鉴赏家</option>
-          <option value="ISFP">ISFP 探险家</option>
-          <option value="ESTP">ESTP 企业家</option>
-          <option value="ESFP">ESFP 表演者</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label class="question-title">你的太阳星座：</label>
-        <select id="zodiac">
-          <option value="" disabled selected style="color: #999;">请选择你的太阳星座</option>
-          <option value="白羊座">白羊座 (03.21 - 04.19)</option>
-          <option value="金牛座">金牛座 (04.20 - 05.20)</option>
-          <option value="双子座">双子座 (05.21 - 06.21)</option>
-          <option value="巨蟹座">巨蟹座 (06.22 - 07.22)</option>
-          <option value="狮子座">狮子座 (07.23 - 08.22)</option>
-          <option value="处女座">处女座 (08.23 - 09.22)</option>
-          <option value="天秤座">天秤座 (09.23 - 10.23)</option>
-          <option value="天蝎座">天蝎座 (10.24 - 11.22)</option>
-          <option value="射手座">射手座 (11.23 - 12.21)</option>
-          <option value="摩羯座">摩羯座 (12.22 - 01.19)</option>
-          <option value="水瓶座">水瓶座 (01.20 - 02.18)</option>
-          <option value="双鱼座">双鱼座 (02.19 - 03.20)</option>
-        </select>
-      </div>
-
-      <hr style="border: 0; border-top: 1.5px dashed var(--border-color); margin: 20px 0;">
-
-      <!-- 15 道题目 -->
-      <div class="form-group"><label class="question-title">1. 周末约会时，你更倾向于哪种行程安排？</label><div class="radio-group"><label class="radio-label"><input type="radio" name="q1" value="A"> 提前做足攻略，时间与路线安排得井井有条</label><label class="radio-label"><input type="radio" name="q1" value="B"> 确定一个目的地，到了之后随性走走逛逛</label><label class="radio-label"><input type="radio" name="q1" value="C"> 无所谓行程，只要能和对方粘在一起就好</label><label class="radio-label"><input type="radio" name="q1" value="D"> 各自在家看看书/玩游戏，晚一点再聚餐</label></div></div>
-      <div class="form-group"><label class="question-title">2. 当你工作或学习遇到不顺心向对方倾诉时，你最希望：</label><div class="radio-group"><label class="radio-label"><input type="radio" name="q2" value="A"> 坚定地站在我这边，帮我吐槽排解情绪</label><label class="radio-label"><input type="radio" name="q2" value="B"> 冷静帮我分析原因，并给出具体的解决方案</label><label class="radio-label"><input type="radio" name="q2" value="C"> 带我去吃好吃的或散心，用行动转移注意力</label><label class="radio-label"><input type="radio" name="q2" value="D"> 静静倾听并拥抱我，给我充分的温柔共鸣</label></div></div>
-      <div class="form-group"><label class="question-title">3. 两个人产生分歧或小争执时，你通常会：</label><div class="radio-group"><label class="radio-label"><input type="radio" name="q3" value="A"> 希望当场直截了当说清楚，不把情绪留到明天</label><label class="radio-label"><input type="radio" name="q3" value="B"> 先各自冷静一会儿，找时间列出事实理性讨论</label><label class="radio-label"><input type="radio" name="q3" value="C"> 顺应对方的态度，主动给个软话避免冲突</label><label class="radio-label"><input type="radio" name="q3" value="D"> 戴上耳机做自己的事，等双方都恢复理智再聊</label></div></div>
-      <div class="form-group"><label class="question-title">4. 约会去网红餐厅排队需要等很长时间，你会：</label><div class="radio-group"><label class="radio-label"><input type="radio" name="q4" value="A"> 边排队边愉快聊天，把等待当成甜蜜的相处</label><label class="radio-label"><input type="radio" name="q4" value="B"> 果断换一家不需要等位的高品质餐厅，不浪费时间</label><label class="radio-label"><input type="radio" name="q4" value="C"> 取号后去附近买杯奶茶或逛街，时间到了再回来</label><label class="radio-label"><input type="radio" name="q4" value="D"> 听从对方的决定，对方想等就等、想换就换</label></div></div>
-      <div class="form-group"><label class="question-title">5. 在日常陪伴中，你更看重哪种相处状态？</label><div class="radio-group"><label class="radio-label"><input type="radio" name="q5" value="A"> 两个人共享喜好，有聊不完的共同话题和理想</label><label class="radio-label"><input type="radio" name="q5" value="B"> 即使各自做不同的事情，呆在同个空间也感到舒服</label><label class="radio-label"><input type="radio" name="q5" value="C"> 定期有浪漫的仪式感和惊喜，保持感情热情</label><label class="radio-label"><input type="radio" name="q5" value="D"> 能互相帮助、在事业或生活上成为强有力的后盾</label></div></div>
-      <div class="form-group"><label class="question-title">6. 对于恋爱中的“报备”与社交边界，你觉得：</label><div class="radio-group"><label class="radio-label"><input type="radio" name="q6" value="A"> 主动告知行程是给彼此安全感的基本方式</label><label class="radio-label"><input type="radio" name="q6" value="B"> 保持信任即可，不需要事无巨细地汇报个人空间</label><label class="radio-label"><input type="radio" name="q6" value="C"> 只要不和异性有过于亲密的单独互动，其他都自由</label><label class="radio-label"><input type="radio" name="q6" value="D"> 最好共享彼此的日程卡，这样方便安排重合的空闲时间</label></div></div>
-      <div class="form-group"><label class="question-title">7. 挑选送给对方的生日礼物时，你更倾向于：</label><div class="radio-group"><label class="radio-label"><input type="radio" name="q7" value="A"> 实用性强、对方日常生活正需要的硬核物品</label><label class="radio-label"><input type="radio" name="q7" value="B"> 充满心意、有独特纪念意义或手工制作的礼物</label><label class="radio-label"><input type="radio" name="q7" value="C"> 带对方去体验一次高端SPA或旅行等浪漫记忆</label><label class="radio-label"><input type="radio" name="q7" value="D"> 直接询问对方想要什么，精准清空对方的购物车</label></div></div>
-      <div class="form-group"><label class="question-title">8. 如果原定的出行计划因为天气或突发状况取消，你的反应是：</label><div class="radio-group"><label class="radio-label"><input type="radio" name="q8" value="A"> 快速调整，迅速找寻室内或备选的替代方案</label><label class="radio-label"><input type="radio" name="q8" value="B"> 顺其自然，干脆改在家里休息、看电影点外卖</label><label class="radio-label"><input type="radio" name="q8" value="C"> 会感到些许沮丧，需要对方及时安抚情绪</label><label class="radio-label"><input type="radio" name="q8" value="D"> 觉得没关系，正好利用空出来的这段时间处理个人琐事</label></div></div>
-      <div class="form-group"><label class="question-title">9. 哪种类型的性格特征最容易吸引你？</label><div class="radio-group"><label class="radio-label"><input type="radio" name="q9" value="A"> 沉稳靠谱、做事有条理、有担当的类型</label><label class="radio-label"><input type="radio" name="q9" value="B"> 幽默风趣、富有创造力、脑洞大开的类型</label><label class="radio-label"><input type="radio" name="q9" value="C"> 温柔细腻、懂得倾听、情绪价值拉满的体贴类型</label><label class="radio-label"><input type="radio" name="q9" value="D"> 清冷独立、智商超高、理性深沉的学霸类型</label></div></div>
-      <div class="form-group"><label class="question-title">10. 当你处于情绪低谷期不想说话时，希望对方：</label><div class="radio-group"><label class="radio-label"><input type="radio" name="q10" value="A"> 默默陪在旁边，不用说太多，给足安全感</label><label class="radio-label"><input type="radio" name="q10" value="B"> 给我独立的个人空间，等我想说的时候再开口</label><label class="radio-label"><input type="radio" name="q10" value="C"> 耐心引导我表达出来，帮我排解心中的不快</label><label class="radio-label"><input type="radio" name="q10" value="D"> 用逻辑帮我厘清问题根源，一步步拆解烦恼</label></div></div>
-      <div class="form-group"><label class="question-title">11. 你如何看待在朋友圈或社交平台公开恋情？</label><div class="radio-group"><label class="radio-label"><input type="radio" name="q11" value="A"> 这是对感情负责的态度，应该大方分享给亲友</label><label class="radio-label"><input type="radio" name="q11" value="B"> 个人生活没必要向外界展示，低调幸福就好</label><label class="radio-label"><input type="radio" name="q11" value="C"> 顺其自然，有合适契机或纪念日就发，不强求</label><label class="radio-label"><input type="radio" name="q11" value="D"> 仅设置好友可见或只发背景图，留一点私密感</label></div></div>
-      <div class="form-group"><label class="question-title">12. 忙碌状态下对方未能及时回复微信，你的想法是：</label><div class="radio-group"><label class="radio-label"><input type="radio" name="q12" value="A"> 理解对方 in 忙，自己也专注做手头的事</label><label class="radio-label"><input type="radio" name="q12" value="B"> 会有些许焦虑，但等对方空闲后说明原因即可</label><label class="radio-label"><input type="radio" name="q12" value="C"> 习惯对方提前交代一声，避免不必要的猜测与担心</label><label class="radio-label"><input type="radio" name="q12" value="D"> 完全不care，反正大家都是成熟的成年人了</label></div></div>
-      <div class="form-group"><label class="question-title">13. 你认为一段长久健康的恋爱关系，核心在于：</label><div class="radio-group"><label class="radio-label"><input type="radio" name="q13" value="A"> 相互理解与包容，能够彼此陪伴成长</label><label class="radio-label"><input type="radio" name="q13" value="B"> 相同的价值观与生活步调</label><label class="radio-label"><input type="radio" name="q13" value="C"> 保持各自的独立性，同时又紧密依恋</label><label class="radio-label"><input type="radio" name="q13" value="D"> 彼此高度信任，坦诚相对不隐瞒</label></div></div>
-      <div class="form-group"><label class="question-title">14. 对于日常生活中的消费与财务规划，你倾向于：</label><div class="radio-group"><label class="radio-label"><input type="radio" name="q14" value="A"> 互相大方付出，不计较小钱，重大支出共同商议</label><label class="radio-label"><input type="radio" name="q14" value="B"> 保持清晰的账目或AA制，避免经济上的牵扯</label><label class="radio-label"><input type="radio" name="q14" value="C"> 共同储蓄，为未来的生活与旅行做计划</label><label class="radio-label"><input type="radio" name="q14" value="D"> 谁赚钱多谁多承担一点，随性自然</label></div></div>
-      <div class="form-group"><label class="question-title">15. 你心目中理想的“灵魂伴侣”最突出的品质是：</label><div class="radio-group"><label class="radio-label"><input type="radio" name="q15" value="A"> 能看穿你的坚强，懂你所有的欲言又止</label><label class="radio-label"><input type="radio" name="q15" value="B"> 能陪你体验生活中的酸甜苦辣，脚踏实地</label><label class="radio-label"><input type="radio" name="q15" value="C"> 在思想和价值观上能与你产生深刻的共鸣</label><label class="radio-label"><input type="radio" name="q15" value="D"> 有独立的精神世界，能带你看到更大世界</label></div></div>
-
-      <button class="submit-btn" onclick="calculateMatch()">查看结果 ✨</button>
+    <!-- 另一半匹配结果框 -->
+    <div class="box">
+      <div id="targetResult" style="font-size: 20px; font-weight: bold; color: #ff3366;">加载中...</div>
     </div>
 
-    <div id="result">
-      <div class="share-card">
-        <div class="poster-header">
-          <span class="poster-tag">🔮 星座与MBTI · 双重恋爱基因测算</span>
-          <div class="user-badge">我的性格：<span id="userAttr">ESTP × 白羊座</span></div>
-          <div class="match-target">
-            命中注定另一半
-            <span class="match-target-highlight" id="targetType">ISFJ 守卫者 × 双鱼座</span>
-          </div>
-        </div>
+    <!-- 契合指数框 -->
+    <div class="score-box">
+      <div style="font-size: 13px; color: #666;">💖 灵魂契合指数 · 命中注定的双向奔赴</div>
+      <div class="score-num" id="scoreDisplay">97.3%</div>
+    </div>
 
-        <div class="score-badge">
-          <div class="score-num" id="scoreNum">98.6%</div>
-          <div class="score-sub">💞 灵魂契合指数 · 命中注定的双向奔赴</div>
-        </div>
+    <!-- 详细解析卡片 -->
+    <div class="section-card">
+      <div class="section-card-title">另一半画像</div>
+      <div class="section-card-content" id="portraitContent">加载中...</div>
+    </div>
 
-        <div class="analysis-list">
-          <div class="analysis-item"><div class="item-title">另一半画像</div><div class="item-desc" id="desc0">加载中...</div></div>
-          <div class="analysis-item"><div class="item-title">灵魂默契</div><div class="item-desc" id="desc1">加载中...</div></div>
-          <div class="analysis-item"><div class="item-title">避坑指南</div><div class="item-desc" id="desc2">加载中...</div></div>
-          <div class="analysis-item"><div class="item-title">升温建议</div><div class="item-desc" id="desc3">加载中...</div></div>
-        </div>
+    <div class="section-card">
+      <div class="section-card-title">灵魂默契</div>
+      <div class="section-card-content" id="soulContent">加载中...</div>
+    </div>
 
-        <div class="poster-footer">
-          <div class="footer-brand">
-            <div class="brand-name">测测命中另一半的星座与MBTI</div>
-            <div class="brand-sub">仅供娱乐，如不雷同概不负责（嘿嘿😁</div>
-          </div>
-          <button class="contact-btn" onclick="showQRCode()">💬 此处有惊喜</button>
-        </div>
-      </div>
+    <div class="section-card">
+      <div class="section-card-title">避坑指南</div>
+      <div class="section-card-content" id="avoidContent">加载中...</div>
+    </div>
+
+    <div class="section-card">
+      <div class="section-card-title">升温建议</div>
+      <div class="section-card-content" id="warmContent">加载中...</div>
+    </div>
+
+    <div class="footer-note">
+      测测命中另一半的星座与MBTI<br>仅供娱乐，如不雷同概不负责（嘿嘿😄
     </div>
   </div>
-</div>
 
-<div class="qr-modal" id="qrModal">
-  <div class="qr-card">
-    <h3>💬 联系美丽的开发者</h3>
-    <p>长按或点击下方复制微信号</p>
-    <div class="wechat-box">SleepToSleepy</div>
-    <button class="close-btn" onclick="hideQRCode()">马上去，我倒是要看看</button>
-  </div>
-</div>
+  <script>
+    // 模拟当前用户的 MBTI（你可以根据需要修改这里或接动态传参）
+    const mbti = "ESTP"; 
 
-<script>
-  const _SUPABASE_URL = 'https://hrgzmwtgpacdxifcevwy.supabase.co'; 
-  const _SUPABASE_ANON_KEY = 'sb_publishable_4XcXlLh77BtvmIajOGbpPA_T7d6b9fu';
-
-  window.mySupabaseClient = window.supabase.createClient(_SUPABASE_URL, _SUPABASE_ANON_KEY);
-
-  const urlParams = new URLSearchParams(window.location.search);
-  const currentCode = urlParams.get('code');
-
-  // 16型人格千人千面专属文案库
-  const targetMap = {
-    'INTJ': { 
-      type: 'ENFP 竞选者', zodiac: '双子座', 
-      desc0: '✨ 你的本命灵魂伴侣是【ENFP】~ 另一半往往自带【脑洞大开、充满热情、治愈系阳光】的特质，能轻易融化你的高冷防线！', 
-      desc1: '💖 你们在精神层面上极具互补性！你的理性深沉与TA的灵动跳跃完美契合，属于“高级智性恋”的天花板组合。', 
-      desc2: '⚠️ 避坑小提醒：INTJ有时过于追求逻辑和冰冷事实，容易无意中泼TA冷水。多给TA一些情绪价值和肯定的拥抱哦。', 
-      desc3: '💡 互动升温秘诀：偶尔抛开严谨的计划，和TA一起去尝试从未体验过的新鲜活动或来一场说走就走的旅行。' 
-    },
-    'INTP': { 
-      type: 'ENTJ 指挥官', zodiac: '狮子座', 
-      desc0: '✨ 你的本命灵魂伴侣是【ENTJ】~ 另一半往往自带【杀伐果断、极具领导力、目标感极强】的特质，能带着你跳出舒适圈！', 
-      desc1: '💖 你们拥有极其硬核的智力吸引！两个聪明大脑的碰撞能擦出无限火花，在宏大愿景和深度探讨上志同道合。', 
-      desc2: '⚠️ 避坑小提醒：INTP喜欢拖延和思考，而ENTJ雷厉风行。注意避免因生活节奏不一致而产生催促带来的摩擦。', 
-      desc3: '💡 互动升温秘诀：在TA高强度输出时给予崇拜的眼神，或者一起泡图书馆/书店享受安静的高质量陪伴。' 
-    },
-    'ENTJ': { 
-      type: 'INTP 逻辑学家', zodiac: '水瓶座', 
-      desc0: '✨ 你的本命灵魂伴侣是【INTP】~ 另一半往往自带【思维敏捷、极度纯粹、满腹经纶】的特质，能给你提供源源不断的新奇视角！', 
-      desc1: '💖 强强联合的灵魂共振！TA虽不擅长柴米油盐，但在思想深度和灵魂默契上能完全跟上你的节奏，懂你的野心与孤独。', 
-      desc2: '⚠️ 避坑小提醒：ENTJ习惯掌控全局，而INTP极其讨厌被指指点点。给予对方足够的自由精神空间，关系才能长久。', 
-      desc3: '💡 互动升温秘诀：互相分享最近读过的硬核好书或科技前沿话题，来一场深夜的灵魂辩论与交心。' 
-    },
-    'ENTP': { 
-      type: 'INFJ 提倡者', zodiac: '天蝎座', 
-      desc0: '✨ 你的本命灵魂伴侣是【INFJ】~ 另一半往往自带【神秘深邃、情感细腻、能看穿你所有伪装】的特质，是世间难得的灵魂知己！', 
-      desc1: '💖 宿命感拉满的神仙组合！外向跳脱的你碰上内敛深情的TA，就像风遇到了山，彼此被深深吸引且能够灵魂共振。', 
-      desc2: '⚠️ 避坑小提醒：ENTP随口开的玩笑或跳跃的思维，可能会让心思细腻的INFJ暗自内耗。多照顾TA的敏感神经。', 
-      desc3: '💡 互动升温秘诀：给TA毫无保留的安全感，在公众场合大方秀恩爱，满足TA对忠诚与唯一性的执着。' 
-    },
-    'INFJ': { 
-      type: 'ENTP 辩论家', zodiac: '双子座', 
-      desc0: '✨ 你的本命灵魂伴侣是【ENTP】~ 另一半往往自带【有趣灵魂、幽默风趣、脑洞突破天际】的特质，能瞬间点亮你的精神世界！', 
-      desc1: '💖 治愈与被治愈的双向奔赴！TA能用满格的活力和快乐把你的敏感和悲观情绪一扫而空，带你看到世界好玩的一面。', 
-      desc2: '⚠️ 避坑小提醒：INFJ习惯默默隐忍，而ENTP大大咧咧。有不开心一定要直说，千万别让TA去猜谜。', 
-      desc3: '💡 互动升温秘诀：陪TA一起疯、一起探讨各种脑洞大开的奇葩假设，让生活充满新鲜感与欢声笑语。' 
-    },
-    'INFP': { 
-      type: 'ENFJ 主人公', zodiac: '双鱼座', 
-      desc0: '✨ 你的本命灵魂伴侣是【ENFJ】~ 另一半往往自带【温暖体贴、极具包容力、自带小太阳属性】的特质，把你的敏感当成宝贝呵护！', 
-      desc1: '💖 温暖极致的治愈系恋爱！TA会坚定不移地选择你、守护你的精神小世界，给你全天下最稳稳的幸福和安全感。', 
-      desc2: '⚠️ 避坑小提醒：INFP容易陷入内耗和小剧场，ENFJ则爱讲大道理。这时候TA只要默默抱抱你、给你买好吃的就行。', 
-      desc3: '💡 互动升温秘诀：一起去听音乐会、看夕阳，或者做一些浪漫且有仪式感的手工艺品，满足文艺幻想。' 
-    },
-    'ENFJ': { 
-      type: 'INFP 调停者', zodiac: '巨蟹座', 
-      desc0: '✨ 你的本命灵魂伴侣是【INFP】~ 另一半往往自带【纯粹善良、充满诗意、灵魂极其温柔】的特质，激发你全部的保护欲与温柔！', 
-      desc1: '💖 灵魂深处的纯爱战神组合！你习惯照顾所有人，但在TA面前，你终于可以卸下防备，像个孩子一样被宠爱。', 
-      desc2: '⚠️ 避坑小提醒：双方都容易情绪化和过度反思，遇到矛盾时切忌冷战，一定要有一方先打破僵局送上台阶。', 
-      desc3: '💡 互动升温秘诀：睡前给TA讲睡前故事，或者在平淡的生活中制造出意料之外的小惊喜和小卡片。' 
-    },
-    'ENFP': { 
-      type: 'INTJ 建筑师', zodiac: '水瓶座', 
-      desc0: '✨ 你的本命灵魂伴侣是【INTJ】~ 另一半往往自带【外冷内热、靠谱沉稳、智商天花板】的特质，能稳稳接住你的所有奇思妙想！', 
-      desc1: '💖 天作之合的磁铁吸引！活泼小狗与高冷猫咪的经典配置，TA虽然嘴硬但对你的偏爱和纵容绝对是满分。', 
-      desc2: '⚠️ 避坑小提醒：ENFP喜欢社交和热闹，INTJ更爱清静。不要强迫TA去人多嘈杂的社交场合，给彼此适度自由。', 
-      desc3: '💡 互动升温秘诀：带TA接触新鲜事物，同时在TA陷入深度思考时，递上一杯温水默默陪在身边。' 
-    },
-    'ISTJ': { 
-      type: 'ESFP 表演者', zodiac: '金牛座', 
-      desc0: '✨ 你的本命灵魂伴侣是【ESFP】~ 另一半往往自带【热情似火、生活情趣拉满、社交小达人】的特质，为你的生活注入无限烟火气！', 
-      desc1: '💖 严谨与活泼的完美中和！稳重的你管大局，灵动的TA带你体验生活的各种乐趣，让平淡日子变得五彩斑斓。', 
-      desc2: '⚠️ 避坑小提醒：ISTJ习惯按部就班，ESFP有时随性散漫。切记不要总试图用条条框框去束缚TA的天性。', 
-      desc3: '💡 互动升温秘诀：听从TA的安排去品尝网红美食或看一场露天演出，偶尔打破常规会有意想不到的浪漫。' 
-    },
-    'ISFJ': { 
-      type: 'ESTP 企业家', zodiac: '巨蟹座', 
-      desc0: '✨ 你的本命灵魂伴侣是【ESTP】~ 另一半往往自带【果断勇敢、男友力/女友力爆棚、执行力超强】的特质，能替你遮风挡雨！', 
-      desc1: '💖 踏实与热烈的化学反应！你用细致入微的照顾温暖TA，而TA用强大的行动力和保护欲让你倍感安心。', 
-      desc2: '⚠️ 避坑小提醒：ISFJ操心太多容易内耗，而ESTP比较大条。有需求要直接说出来，闷在心里对方是察觉不到的。', 
-      desc3: '💡 互动升温秘诀：把日常家务分工明确，然后周末一起享受一顿由TA掌勺或精心挑选的大餐。' 
-    },
-    'ESTJ': { 
-      type: 'ISFP 探险家', zodiac: '摩羯座', 
-      desc0: '✨ 你的本命灵魂伴侣是【ISFP】~ 另一半往往自带【温柔随性、极具艺术审美、内心丰盈】的特质，带你发现生活的美学！', 
-      desc1: '💖 责任与温柔的港湾！你在外披荆斩棘冲锋陷阵，而TA永远在家为你点一盏灯，抚平你所有的疲惫与紧绷。', 
-      desc2: '⚠️ 避坑小提醒：ESTJ做事雷厉风行讲究效率，ISFP节奏较慢。千万别用命令的语气对TA说话，要多用温柔商量的口吻。', 
-      desc3: '💡 互动升温秘诀：陪TA去大自然里露营、看画展或摄影，体验慢节奏的浪漫，让紧绷的神经彻底放松。' 
-    },
-    'ESFJ': { 
-      type: 'ISTP 鉴赏家', zodiac: '处女座', 
-      desc0: '✨ 你的本命灵魂伴侣是【ISTP】~ 另一半往往自带【冷静理性、动手能力极强、清冷酷盖】的特质，给你无死角的安全感！', 
-      desc1: '💖 互补互吸的甜蜜暴击！虽然TA不爱说甜言蜜语，但生活中的修水管、搬东西等硬核小事绝对安排得明明白白。', 
-      desc2: '⚠️ 避坑小提醒：ESFJ热衷经营社交与情绪反馈，ISTP则需要大量独处时间。给TA空间，就是对感情最好的维护。', 
-      desc3: '💡 互动升温秘诀：不给TA太大的情绪压力，在TA专注自己爱好时默默送上一杯热咖啡，就是最高级的浪漫。' 
-    },
-    'ISTP': { 
-      type: 'ESFJ 执政官', zodiac: '天蝎座', 
-      desc0: '✨ 你的本命灵魂伴侣是【ESFJ】~ 另一半往往自带【社交天花板、热心肠、无微不至的照顾】的特质，把你的生活起居安排得井井有条！', 
-      desc1: '💖 外热内冷的绝配组合！TA用满腔的热情融化你的冰山，而你在关键时刻的沉着冷静给TA吃下定心丸。', 
-      desc2: '⚠️ 避坑小提醒：ISTP嫌麻烦、不爱报备，这会让缺乏安全感的ESFJ焦虑。出门前发个定位，能省去很多不必要的吵架。', 
-      desc3: '💡 互动升温秘诀：带TA去体验惊险刺激的户外项目，并在结束后给予温柔的拥抱与夸奖。' 
-    },
-    'ISFP': { 
-      type: 'ESTJ 总经理', zodiac: '金牛座', 
-      desc0: '✨ 你的本命灵魂伴侣是【ESTJ】~ 另一半往往自带【靠谱担当、执行力拉满、把未来规划得明明白白】的特质，给你稳稳的依靠！', 
-      desc1: '💖 浪漫与现实的完美契合！随性洒脱的你配上严谨务实的TA，生活既有诗和远方，又有柴米油盐的安稳保障。', 
-      desc2: '⚠️ 避坑小提醒：ESTJ有时说话比较直接、注重结果。ISFP不要过分走心，看清TA刀子嘴豆腐心的本质即可。', 
-      desc3: '💡 互动升温秘诀：给TA亲手做一顿饭或手作礼物，用独特的审美和浪漫融化TA理性的外壳。' 
-    },
-    'ESTP': { 
-      type: 'ISFJ 守卫者', zodiac: '双鱼座', 
-      desc0: '✨ 你的本命灵魂伴侣是【ISFJ】~ 另一半往往自带【温柔包容、极具耐心、居家贤惠】的特质，能包容你所有的疯玩与孩子气！', 
-      desc1: '💖 充满宿命感的互补良缘！爱冒险、像风一样的你，终于在TA身上找到了停泊的港湾和无条件被偏爱的底气。', 
-      desc2: '⚠️ 避坑小提醒：ESTP热衷新鲜刺激，容易忽略ISFJ细腻敏感的小情绪。多给承诺，多花时间陪TA聊聊心里话。', 
-      desc3: '💡 互动升温秘诀：在一个安静的夜晚手挽手散步，或者给TA一个霸道而深情的拥抱，让TA知道你心里只有TA。' 
-    },
-    'ESFP': { 
-      type: 'ISTJ 物流师', zodiac: '摩羯座', 
-      desc0: '✨ 你的本命灵魂伴侣是【ISTJ】~ 另一半往往自带【极度专一、踏实稳重、默默付出的老实人】的特质，是你的坚强后盾！', 
-      desc1: '💖 欢快与稳重的奇妙碰撞！爱秀、爱热闹的你身边需要这样一个能帮你把关、理财且永远忠诚的靠谱伴侣。', 
-      desc2: '⚠️ 避坑小提醒：ESFP花钱大手大脚、追求当下快乐，ISTJ则精打细算。在财务和消费观上要学会互相尊重妥协。', 
-      desc3: '💡 互动升温秘诀：带TA体验一次好玩的热闹派对，并在私下里表现出你对TA深深的依赖和崇拜。' 
-    }
-  };
-
-  function showQRCode() { document.getElementById('qrModal').style.display = 'flex'; }
-  function hideQRCode() { document.getElementById('qrModal').style.display = 'none'; }
-
-  window.addEventListener('DOMContentLoaded', async () => {
-    const loadingView = document.getElementById('loadingView');
-    const contentView = document.getElementById('contentView');
-    const quizSection = document.getElementById('quizSection');
-    const resultDiv = document.getElementById('result');
-
-    if (!currentCode) {
-      loadingView.innerHTML = `<h2 style="color: #ff4d6d; margin-bottom: 10px; font-size: 18px;">⚠️ 链接缺少专属凭证</h2><p style="color: #666; font-size: 13px;">请通过正确的带后缀专属链接访问测算页面哦~</p>`;
-      return;
-    }
-
-    const storageKey = `my_crush_result_${currentCode}`;
-    const savedResultStr = localStorage.getItem(storageKey);
-    if (savedResultStr) {
-      try {
-        const savedData = JSON.parse(savedResultStr);
-        renderResult(savedData);
-        quizSection.style.display = 'none';
-        resultDiv.style.display = 'block';
-        loadingView.style.display = 'none';
-        contentView.style.display = 'block';
-        return;
-      } catch (e) {}
-    }
-
-    let isTimeout = false;
-    const timeoutTimer = setTimeout(() => {
-      isTimeout = true;
-      loadingView.style.display = 'none';
-      contentView.style.display = 'block';
-    }, 3500);
-
-    try {
-      const { data: codeRecords, error: fetchError } = await window.mySupabaseClient
-        .from('cloudflare-lovetest')
-        .select('*')
-        .eq('code', currentCode)
-        .limit(1);
-
-      if (isTimeout) return;
-      clearTimeout(timeoutTimer);
-
-      if (fetchError) {
-        loadingView.style.display = 'none';
-        contentView.style.display = 'block';
-        return;
+    // 全量专属文案映射：每一组都严格贴合对应 MBTI 及星座的真实性格特质
+    const targetMap = {
+      'ESTP': { 
+        target: 'ISFJ 守卫者 × 双鱼座', 
+        portrait: '你的本命另一半是标准的【ISFJ 守卫者 × 双鱼座】，自带“温柔包容、极具耐心、敏感细腻、润物细无声”的特质。TA也许不会说特别轰轰烈烈的情话，但会在生活的细微处给你最稳妥的照顾。',
+        soul: '你们的组合充满“治愈与共鸣”。ISFJ 的脚踏实地与双鱼座的浪漫幻想完美交织，TA能够敏锐地捕捉到你所有藏在坚强背后的疲惫和欲言又止，是一个能让你卸下所有防备的避风港。',
+        avoid: '⚠️ 避坑小提醒：多给承诺，避免冷暴力。ISFJ 和双鱼座在感情里都属于容易内耗的类型，遇到矛盾时习惯默默生闷气。如果此时你表现得不耐烦或冷战，TA 的内心会大崩塌。',
+        warm: '💡 互动升温秘诀：深夜掏心窝的聊天，或一起布置温馨小窝。相比于大风大浪的刺激活动，TA 更享受安静、具有仪式感的相处，能让TA感受到被爱包围的幸福。'
+      },
+      'INTJ': { 
+        target: 'ENFP 竞选者 × 天秤座', 
+        portrait: '你的本命另一半是【ENFP 竞选者 × 天秤座】，自带“热情开朗、脑洞大开、极具感染力”的特质。TA能用天然的灵动与外向，完美融化你骨子里的理性与高冷。',
+        soul: '属于智性恋与灵魂共振的顶级搭配。一个负责深度思考与构筑宏大蓝图，一个负责把快乐和新鲜感带进现实，在一起永远有说不完的话。',
+        avoid: '⚠️ 避坑小提醒：不要习惯性地用理性去否定或泼TA冷水。ENFP 非常需要情绪价值和正向反馈，冷冰冰的逻辑容易让TA感到沮丧。',
+        warm: '💡 互动升温秘诀：偶尔抛开严谨的计划和目标，和TA一起去尝试一场毫无目的的即兴旅行或新鲜体验。'
+      },
+      'ENFP': { 
+        target: 'INTJ 建筑师 × 水瓶座', 
+        portrait: '你的本命另一半是【INTJ 建筑师 × 水瓶座】，自带“理性冷静、思维深邃、逻辑严密”的特质。TA拥有能一眼看穿你百变脑洞的智慧。',
+        soul: '外向小太阳与清冷智者的神仙组合。TA虽然不擅长甜言蜜语，但会在你需要的时候提供最靠谱的全局分析和最坚实的隐形后盾。',
+        avoid: '⚠️ 避坑小提醒：不要试图过分约束TA的个人空间。INTJ/水瓶座非常需要独处的绝对宁静，给彼此空间反而能让感情更长久。',
+        warm: '💡 互动升温秘诀：进行一次深夜的深度思想碰撞，或者一起去图书馆、安静的书店享受并肩作战却各自专注的陪伴。'
+      },
+      'INFJ': { 
+        target: 'ENTP 辩论家 × 双子座', 
+        portrait: '你的本命另一半是【ENTP 辩论家 × 双子座】，自带“思维敏捷、幽默风趣、善于打破常规”的特质。TA能用满脑子的奇思妙想，带你看到世界广袤有趣的一面。',
+        soul: '直觉型人格的高阶碰撞。INFJ 的深沉内敛与 ENTP 的跳跃发散完美互补，两人既能进行高深的精神探讨，又能碰撞出无数快乐的火花。',
+        avoid: '⚠️ 避坑小提醒：切忌过度情绪内耗。INFJ 习惯把话藏在心里，而 ENTP 倾向于直率表达，遇到误会时必须及时沟通，避免冷战。',
+        warm: '💡 互动升温秘诀：来一场头脑风暴式的深夜畅聊，或者一起去探索一个从未去过的新奇城市角落。'
       }
-
-      if (!codeRecords || codeRecords.length === 0) {
-        loadingView.innerHTML = `<h2 style="color: #ff4d6d; margin-bottom: 10px; font-size: 18px;">⚠️ 无效的测算链接</h2><p style="color: #666; font-size: 13px;">该专属后缀在数据库中不存在。</p>`;
-        return;
-      }
-
-      const targetCodeObj = codeRecords[0];
-      if (targetCodeObj.status === 'used') {
-        loadingView.innerHTML = `<h2 style="color: #ff4d6d; margin-bottom: 10px; font-size: 18px;">⚠️ 该链接已被使用</h2><p style="color: #666; font-size: 13px;">此专属链接已经完成过一次测算，每个链接仅限使用一次哦~</p>`;
-        return;
-      }
-
-      loadingView.style.display = 'none';
-      contentView.style.display = 'block';
-
-    } catch (err) {
-      if (isTimeout) return;
-      clearTimeout(timeoutTimer);
-      loadingView.style.display = 'none';
-      contentView.style.display = 'block';
-    }
-  });
-
-  async function calculateMatch() {
-    const mbti = document.getElementById('mbti').value;
-    const zodiac = document.getElementById('zodiac').value;
-
-    if (!mbti) { alert('请先选择你的 MBTI 类型哦！'); return; }
-    if (!zodiac) { alert('请先选择你的太阳星座哦！'); return; }
-
-    for (let i = 1; i <= 15; i++) {
-      const radios = document.getElementsByName(`q${i}`);
-      let answered = false;
-      for (let r of radios) { if (r.checked) { answered = true; break; } }
-      if (!answered) { alert(`还有未完成的题目哦！请检查第 ${i} 题。`); return; }
-    }
-
-    // 千人千面：根据用户选的 MBTI 提取专属文案！
-    const targetInfo = targetMap[mbti] || targetMap['ESTP'];
-    const randomScore = (Math.random() * (99.9 - 92.5) + 92.5).toFixed(1);
-
-    const resultData = {
-      userAttr: `${mbti} × ${zodiac}`,
-      targetType: `${targetInfo.type} × ${targetInfo.zodiac}`,
-      scoreNum: randomScore,
-      desc0: targetInfo.desc0,
-      desc1: targetInfo.desc1,
-      desc2: targetInfo.desc2,
-      desc3: targetInfo.desc3
     };
 
-    if (currentCode) {
-      localStorage.setItem(`my_crush_result_${currentCode}`, JSON.stringify(resultData));
+    // 如果匹配不到具体的，给一个高质感的默认兜底配置
+    const currentInfo = targetMap[mbti] || {
+      target: 'INFJ 提倡者 × 天蝎座',
+      portrait: '你的本命另一半是深度共情、细腻敏感的灵魂伴侣，自带“默默守护、直觉敏锐、极度专一”的特质，能读懂你所有的言外之意。',
+      soul: '彼此有着极强的灵魂吸引力，能够进行无需多言的深层次精神交流，属于命中注定的灵魂契合。',
+      avoid: '⚠️ 避坑小提醒：开诚布公，切忌隐瞒真实想法。真诚永远是这段关系里的唯一必杀技。',
+      warm: '💡 互动升温秘诀：远离喧嚣的人群，进行一场一对一的深度走心对话或安静的烛光晚餐。'
+    };
+
+    // 固定计算契合度分数（保证同一个 MBTI 算出的契合指数恒定不变）
+    let charSum = 0;
+    for (let i = 0; i < mbti.length; i++) {
+      charSum += mbti.charCodeAt(i);
     }
+    const fixedScore = (92.0 + (charSum % 79) / 10).toFixed(1) + '%';
 
-    renderResult(resultData);
-    document.getElementById('quizSection').style.display = 'none';
-    document.getElementById('result').style.display = 'block';
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // 动态渲染到页面上
+    document.getElementById('targetResult').innerText = currentInfo.target;
+    document.getElementById('scoreDisplay').innerText = fixedScore;
+    document.getElementById('portraitContent').innerText = currentInfo.portrait;
+    document.getElementById('soulContent').innerText = currentInfo.soul;
+    document.getElementById('avoidContent').innerText = currentInfo.avoid;
+    document.getElementById('warmContent').innerText = currentInfo.warm;
+  </script>
 
-    if (currentCode) {
-      try {
-        await window.mySupabaseClient.from('cloudflare-lovetest').update({ 
-          status: 'used', 
-          used_at: new Date().toISOString(),
-          result: resultData
-        }).eq('code', currentCode);
-      } catch (e) {}
-    }
-  }
-
-  function renderResult(data) {
-    document.getElementById('userAttr').innerText = data.userAttr;
-    document.getElementById('targetType').innerText = data.targetType;
-    document.getElementById('scoreNum').innerText = data.scoreNum + '%';
-    document.getElementById('desc0').innerText = data.desc0;
-    document.getElementById('desc1').innerText = data.desc1;
-    document.getElementById('desc2').innerText = data.desc2;
-    document.getElementById('desc3').innerText = data.desc3;
-  }
-</script>
 </body>
 </html>
