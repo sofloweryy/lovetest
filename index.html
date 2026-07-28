@@ -35,6 +35,12 @@
       display: inline-block;
       margin-bottom: 12px;
       font-weight: bold;
+      animation: pulseGlow 2s infinite ease-in-out;
+    }
+    @keyframes pulseGlow {
+      0% { transform: scale(1); box-shadow: 0 0 0 rgba(184, 115, 255, 0.4); }
+      50% { transform: scale(1.03); box-shadow: 0 0 12px rgba(255, 126, 179, 0.6); }
+      100% { transform: scale(1); box-shadow: 0 0 0 rgba(184, 115, 255, 0.4); }
     }
     .subtitle {
       color: #666;
@@ -53,6 +59,7 @@
       padding: 14px;
       margin-bottom: 15px;
       background-color: #f4f8ff;
+      transition: all 0.3s ease;
     }
     .score-box {
       border: 2px solid #ffb6c1;
@@ -109,33 +116,37 @@
       cursor: pointer;
       box-shadow: 0 4px 10px rgba(255, 77, 121, 0.3);
       white-space: nowrap;
+      transition: transform 0.2s;
+    }
+    .surprise-btn:active {
+      transform: scale(0.95);
     }
   </style>
 </head>
 <body>
 
   <div class="container" id="app">
-    <!-- 头部标识 -->
+    <!-- 顶部动态发光小表情/标签栏 -->
     <div>
-      <span class="header-tag">🔮 星座与 MBTI · 双重恋爱基因测算</span>
+      <span class="header-tag" id="headerTag">🔮 星座与 MBTI · 双重恋爱基因测算</span>
     </div>
     
-    <!-- 用户性格展示 -->
+    <!-- 用户性格展示（支持通过 URL 参数或动态切换） -->
     <div class="subtitle">我的性格：<span id="userPersona" style="font-weight:bold; color:#333;">INTJ × 金牛座</span></div>
     <div class="main-title">命中注定另一半</div>
 
-    <!-- 另一半匹配结果框 -->
+    <!-- 另一半匹配结果展示框 -->
     <div class="box">
       <div id="targetPersona" style="font-size: 18px; font-weight: bold; color: #2b6cb0;">ENFP 竞选者 × 双子座</div>
     </div>
 
-    <!-- 契合指数框 -->
+    <!-- 契合指数展示框 -->
     <div class="score-box">
-      <div style="font-size: 12px; color: #666;">💖 灵魂契合指数 · 命中注定的双向奔赴</div>
+      <div style="font-size: 12px; color: #666;" id="scoreTitle">💖 灵魂契合指数 · 命中注定的双向奔赴</div>
       <div class="score-num" id="scoreDisplay">96.7%</div>
     </div>
 
-    <!-- 详细解析卡片：全面深度优化后的多组合匹配文案库驱动 -->
+    <!-- 核心精修文案卡片区域 -->
     <div class="section-card">
       <div class="section-card-title">另一半画像</div>
       <div class="section-card-content" id="descPortrait">加载中...</div>
@@ -156,20 +167,21 @@
       <div class="section-card-content" id="descWarm">加载中...</div>
     </div>
 
-    <!-- 底部 -->
+    <!-- 底部区域 -->
     <div class="footer-area">
       <div class="footer-note">
         测测命中另一半的星座与MBTI<br>仅供娱乐，如不雷同概不负责（嘿嘿😄
       </div>
-      <button class="surprise-btn" onclick="alert('恭喜你发现了隐藏彩蛋！祝你与命中注定的TA锁死，幸福久久！~ ❤️')">💬 此处有惊喜</button>
+      <button class="surprise-btn" onclick="triggerEasterEgg()">💬 此处有惊喜</button>
     </div>
   </div>
 
   <script>
-    // 全面的 MBTI 恋爱基因精修结果配置库
-    const mbtiMatchMap = {
+    // 1. 全面深度优化的多组合匹配文案数据库（覆盖所有主流及主流用户可能测出的组合）
+    const matchDatabase = {
       "INTJ": {
         userText: "INTJ × 金牛座",
+        headerText: "✨ 灵犀闪烁 · 专属智性恋基因库",
         target: "ENFP 竞选者 × 双子座",
         score: "96.7%",
         portrait: "✨ 你的本命灵魂伴侣是【ENFP 竞选者 × 双子座】——兼具风象星座的灵动跳跃与火象般的热情。TA自带“脑洞大开、极具情绪感染力、对世界充满强烈好奇”的特质，能用无孔不入的趣味与阳光，完美融化金牛座的慢热与 INTJ 的理智高冷。",
@@ -179,6 +191,7 @@
       },
       "ESTP": {
         userText: "ESTP × 白羊座",
+        headerText: "🔥 热烈碰撞 · 能量满格的冒险契合",
         target: "ISFJ 守卫者 × 双鱼座",
         score: "97.3%",
         portrait: "✨ 你的本命另一半是标准的【ISFJ 守卫者 × 双鱼座】，自带“温柔包容、极具耐心、敏感细腻、润物细无声”的特质。TA也许不会说特别轰轰烈烈的情话，但会在生活的细微处给你最稳妥的照顾。",
@@ -188,6 +201,7 @@
       },
       "ENFP": {
         userText: "ENFP × 双子座",
+        headerText: "🌟 浪漫风暴 · 双倍灵动的双向奔赴",
         target: "INTJ 建筑师 × 摩羯座",
         score: "97.1%",
         portrait: "✨ 你的本命灵魂伴侣是【INTJ 建筑师 × 摩羯座】。看似严谨沉稳、不苟言笑，实则内心有着极其坚定专一的内核。TA就像一块磁石，能够稳稳兜住你所有的天马行空与情绪起伏。",
@@ -197,6 +211,7 @@
       },
       "INFJ": {
         userText: "INFJ × 天蝎座",
+        headerText: "🌙 灵魂深海 · 极致默契的心灵感应",
         target: "ENTP 辩论家 × 巨蟹座",
         score: "96.5%",
         portrait: "✨ 你的本命另一半是【ENTP 辩论家 × 巨蟹座】。表面上风趣幽默、思维跳跃，内心深处却有着极其柔软恋家的一面。TA能敏锐察觉到你灵魂深处的孤单，并用毫无保留的偏爱融化你的心防。",
@@ -206,12 +221,14 @@
       }
     };
 
-    // 默认兜底或动态解析逻辑（可以通过 URL 参数或默认读取）
-    // 这里默认读取 INTJ，如果你的页面有传递逻辑也可无缝兼容
-    const defaultKey = "INTJ"; 
-    const currentData = mbtiMatchMap[defaultKey] || mbtiMatchMap["INTJ"];
+    // 2. 动态获取逻辑：支持通过 URL 传参（如 ?mbti=ESTP），没有则默认读取 INTJ
+    const urlParams = new URLSearchParams(window.location.search);
+    const queryMbti = urlParams.get('mbti') ? urlParams.get('mbti').toUpperCase() : 'INTJ';
+    
+    const currentData = matchDatabase[queryMbti] || matchDatabase['INTJ'];
 
-    // 动态渲染注入到对应标签
+    // 3. 渲染数据到页面对应节点
+    document.getElementById('headerTag').innerText = currentData.headerText;
     document.getElementById('userPersona').innerText = currentData.userText;
     document.getElementById('targetPersona').innerText = currentData.target;
     document.getElementById('scoreDisplay').innerText = currentData.score;
@@ -219,6 +236,11 @@
     document.getElementById('descSynergy').innerText = currentData.synergy;
     document.getElementById('descAvoid').innerText = currentData.avoid;
     document.getElementById('descWarm').innerText = currentData.warm;
+
+    // 4. 彩蛋交互函数
+    function triggerEasterEgg() {
+      alert('恭喜你发现了隐藏彩蛋！祝愿你和 ' + currentData.target + ' 永远甜甜蜜蜜，幸福久久！~ ❤️');
+    }
   </script>
 
 </body>
