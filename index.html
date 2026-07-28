@@ -32,7 +32,7 @@ body {
   flex-direction: column;
   align-items: center;
   min-height: 100vh;
-  padding: 12px 16px 24px 16px;
+  padding: 8px 16px 32px 16px;
   position: relative;
   overflow-x: hidden;
 }
@@ -41,12 +41,11 @@ body {
   position: relative;
   width: 100%;
   max-width: 500px;
-  height: 14px; /* 减小高度，让顶部更紧凑 */
+  height: 32px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 12px;
-  margin-bottom: -4px; /* 微微上提，缩小与下方卡片的空隙 */
   pointer-events: none;
 }
 
@@ -228,14 +227,14 @@ button.submit-btn {
 button.submit-btn:active { transform: scale(0.98); }
 
 #result {
-  margin-top: 0px;
+  margin-top: 10px;
   display: none;
 }
 
 .share-card {
   background: #ffffff;
   border-radius: 20px;
-  padding: 16px 18px;
+  padding: 22px;
   box-shadow: 0 15px 35px rgba(255, 77, 109, 0.15);
   border: 2px solid #ffe5e9;
   position: relative;
@@ -243,8 +242,8 @@ button.submit-btn:active { transform: scale(0.98); }
 
 .poster-header {
   text-align: center;
-  margin-bottom: 10px;
-  padding-bottom: 10px;
+  margin-bottom: 16px;
+  padding-bottom: 14px;
   border-bottom: 1.5px dashed var(--border-color);
 }
 
@@ -252,81 +251,81 @@ button.submit-btn:active { transform: scale(0.98); }
   display: inline-block;
   background: var(--primary-gradient);
   color: #fff;
-  padding: 3px 12px;
+  padding: 4px 14px;
   border-radius: 18px;
-  font-size: 11px;
+  font-size: 11.5px;
   font-weight: 800;
-  margin-bottom: 6px;
+  margin-bottom: 10px;
 }
 
 .user-badge {
-  font-size: 12.5px;
+  font-size: 13px;
   color: var(--text-sub);
-  margin-bottom: 4px;
+  margin-bottom: 6px;
   font-weight: 500;
 }
 
 .user-badge span { color: #ff4d6d; font-weight: bold; }
 
 .match-target {
-  font-size: 16.5px;
+  font-size: 18px;
   color: var(--text-main);
   font-weight: 900;
-  line-height: 1.3;
+  line-height: 1.4;
 }
 
 .match-target-highlight {
   color: #ff4d6d;
-  font-size: 19.5px;
+  font-size: 21px;
   display: block;
-  margin-top: 2px;
+  margin-top: 4px;
 }
 
 .score-badge {
   background: var(--accent-bg);
   border: 1.5px solid #ffccd5;
   border-radius: 12px;
-  padding: 8px;
+  padding: 10px;
   text-align: center;
-  margin-bottom: 10px;
+  margin-bottom: 16px;
 }
 
-.score-num { font-size: 22px; font-weight: 900; color: #ff4d6d; }
-.score-sub { font-size: 11.5px; color: var(--text-sub); font-weight: 600; margin-top: 1px; }
+.score-num { font-size: 24px; font-weight: 900; color: #ff4d6d; }
+.score-sub { font-size: 12px; color: var(--text-sub); font-weight: 600; margin-top: 2px; }
 
 .analysis-list {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  margin-bottom: 12px;
+  gap: 12px;
+  margin-bottom: 18px;
 }
 
 .analysis-item {
   background: #fff8f9;
   border-left: 4px solid #ff4d6d;
-  border-radius: 0 10px 10px 0;
-  padding: 8px 12px;
+  border-radius: 0 12px 12px 0;
+  padding: 12px 14px;
 }
 
-.item-title { font-size: 13px; font-weight: 800; color: #ff4d6d; margin-bottom: 2px; }
-.item-desc { font-size: 12.5px; line-height: 1.45; color: #4a4e69; font-weight: 500; }
+.item-title { font-size: 13.5px; font-weight: 800; color: #ff4d6d; margin-bottom: 4px; }
+.item-desc { font-size: 13px; line-height: 1.5; color: #4a4e69; font-weight: 500; }
 
 .poster-footer {
-  padding-top: 10px;
+  padding-top: 14px;
   border-top: 1.5px solid #f0f0f5;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.footer-brand .brand-name { font-size: 11.5px; font-weight: bold; color: var(--text-main); }
-.footer-brand .brand-sub { font-size: 9.5px; color: #aaa; }
+.footer-brand .brand-name { font-size: 12px; font-weight: bold; color: var(--text-main); }
+.footer-brand .brand-sub { font-size: 10px; color: #aaa; }
 
 .contact-btn {
   background: linear-gradient(135deg, #ff758f 0%, #ff4d6d 100%);
   color: #fff;
-  font-size: 11px;
-  padding: 6px 12px;
+  font-size: 11.5px;
+  padding: 6px 14px;
   border-radius: 16px;
   font-weight: bold;
   cursor: pointer;
@@ -478,13 +477,12 @@ button.submit-btn:active { transform: scale(0.98); }
           <span class="poster-tag">🔮 星座与MBTI · 双重恋爱基因测算</span>
           <div class="user-badge">我的性格：<span id="userAttr">ESTP × 白羊座</span></div>
           <div class="match-target">
-            命中注定另一半
             <span class="match-target-highlight" id="targetType">ISFJ 守卫者 × 双鱼座</span>
           </div>
         </div>
 
         <div class="score-badge">
-          <div class="score-num" id="scoreNum">98.1%</div>
+          <div class="score-num" id="scoreNum">98.6%</div>
           <div class="score-sub">💞 灵魂契合指数 · 命中注定的双向奔赴</div>
         </div>
 
@@ -525,6 +523,7 @@ button.submit-btn:active { transform: scale(0.98); }
   const urlParams = new URLSearchParams(window.location.search);
   const currentCode = urlParams.get('code');
 
+  // 全量精简干练的高品质 16 种 MBTI 匹配数据库
   const targetMap = {
     'INTJ': {
       type: 'ENFP 竞选者', zodiac: '双子座',
@@ -537,7 +536,7 @@ button.submit-btn:active { transform: scale(0.98); }
       type: 'ENTJ 指挥官', zodiac: '狮子座',
       desc0: '兼具果断执行力与王者般的掌控力，做事雷厉风行且自带不容忽视的强大气场。',
       desc1: '强强联手的极致思维碰撞：在精神层面上拥有极高契合度，彼此欣赏并能并肩作战。',
-      desc2: '避免在讨论 or 争论时过于较真输赢，给彼此留出足够的温柔空间与情绪缓冲。',
+      desc2: '避免在讨论或争论时过于较真输赢，给彼此留出足够的温柔空间与情绪缓冲。',
       desc3: '一起探索一个全新领域的硬核知识，或者享受一次高品质的深度长谈。'
     },
     'ENTJ': {
