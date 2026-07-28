@@ -463,7 +463,7 @@ button.submit-btn:active { transform: scale(0.98); }
       <div class="form-group"><label class="question-title">9. 哪种类型的性格特征最容易吸引你？</label><div class="radio-group"><label class="radio-label"><input type="radio" name="q9" value="A"> 沉稳靠谱、做事有条理、有担当的类型</label><label class="radio-label"><input type="radio" name="q9" value="B"> 幽默风趣、富有创造力、脑洞大开的类型</label><label class="radio-label"><input type="radio" name="q9" value="C"> 温柔细腻、懂得倾听、情绪价值拉满的体贴类型</label><label class="radio-label"><input type="radio" name="q9" value="D"> 清冷独立、智商超高、理性深沉的学霸类型</label></div></div>
       <div class="form-group"><label class="question-title">10. 当你处于情绪低谷期不想说话时，希望对方：</label><div class="radio-group"><label class="radio-label"><input type="radio" name="q10" value="A"> 默默陪在旁边，不用说太多，给足安全感</label><label class="radio-label"><input type="radio" name="q10" value="B"> 给我独立的个人空间，等我想说的时候再开口</label><label class="radio-label"><input type="radio" name="q10" value="C"> 耐心引导我表达出来，帮我排解心中的不快</label><label class="radio-label"><input type="radio" name="q10" value="D"> 用逻辑帮我厘清问题根源，一步步拆解烦恼</label></div></div>
       <div class="form-group"><label class="question-title">11. 你如何看待在朋友圈或社交平台公开恋情？</label><div class="radio-group"><label class="radio-label"><input type="radio" name="q11" value="A"> 这是对感情负责的态度，应该大方分享给亲友</label><label class="radio-label"><input type="radio" name="q11" value="B"> 个人生活没必要向外界展示，低调幸福就好</label><label class="radio-label"><input type="radio" name="q11" value="C"> 顺其自然，有合适契机或纪念日就发，不强求</label><label class="radio-label"><input type="radio" name="q11" value="D"> 仅设置好友可见或只发背景图，留一点私密感</label></div></div>
-      <div class="form-group"><label class="question-title">12. 忙碌状态下对方未能及时回复微信，你的想法是：</label><div class="radio-group"><label class="radio-label"><input type="radio" name="q12" value="A"> 理解对方在忙，自己也专注做手头的事</label><label class="radio-label"><input type="radio" name="q12" value="B"> 会有些许焦虑，但等对方空闲后说明原因即可</label><label class="radio-label"><input type="radio" name="q12" value="C"> 习惯对方提前交代一声，避免不必要的猜测与担心</label><label class="radio-label"><input type="radio" name="q12" value="D"> 完全不care，反正大家都是成熟的成年人了</label></div></div>
+      <div class="form-group"><label class="question-title">12. 忙碌状态下对方未能及时回复微信，你的想法是：</label><div class="radio-group"><label class="radio-label"><input type="radio" name="q12" value="A"> 理解对方 in 忙，自己也专注做手头的事</label><label class="radio-label"><input type="radio" name="q12" value="B"> 会有些许焦虑，但等对方空闲后说明原因即可</label><label class="radio-label"><input type="radio" name="q12" value="C"> 习惯对方提前交代一声，避免不必要的猜测与担心</label><label class="radio-label"><input type="radio" name="q12" value="D"> 完全不care，反正大家都是成熟的成年人了</label></div></div>
       <div class="form-group"><label class="question-title">13. 你认为一段长久健康的恋爱关系，核心在于：</label><div class="radio-group"><label class="radio-label"><input type="radio" name="q13" value="A"> 相互理解与包容，能够彼此陪伴成长</label><label class="radio-label"><input type="radio" name="q13" value="B"> 相同的价值观与生活步调</label><label class="radio-label"><input type="radio" name="q13" value="C"> 保持各自的独立性，同时又紧密依恋</label><label class="radio-label"><input type="radio" name="q13" value="D"> 彼此高度信任，坦诚相对不隐瞒</label></div></div>
       <div class="form-group"><label class="question-title">14. 对于日常生活中的消费与财务规划，你倾向于：</label><div class="radio-group"><label class="radio-label"><input type="radio" name="q14" value="A"> 互相大方付出，不计较小钱，重大支出共同商议</label><label class="radio-label"><input type="radio" name="q14" value="B"> 保持清晰的账目或AA制，避免经济上的牵扯</label><label class="radio-label"><input type="radio" name="q14" value="C"> 共同储蓄，为未来的生活与旅行做计划</label><label class="radio-label"><input type="radio" name="q14" value="D"> 谁赚钱多谁多承担一点，随性自然</label></div></div>
       <div class="form-group"><label class="question-title">15. 你心目中理想的“灵魂伴侣”最突出的品质是：</label><div class="radio-group"><label class="radio-label"><input type="radio" name="q15" value="A"> 能看穿你的坚强，懂你所有的欲言又止</label><label class="radio-label"><input type="radio" name="q15" value="B"> 能陪你体验生活中的酸甜苦辣，脚踏实地</label><label class="radio-label"><input type="radio" name="q15" value="C"> 在思想和价值观上能与你产生深刻的共鸣</label><label class="radio-label"><input type="radio" name="q15" value="D"> 有独立的精神世界，能带你看到更大世界</label></div></div>
@@ -524,14 +524,121 @@ button.submit-btn:active { transform: scale(0.98); }
   const urlParams = new URLSearchParams(window.location.search);
   const currentCode = urlParams.get('code');
 
+  // 16型人格千人千面专属文案库
   const targetMap = {
-    'INTJ': { type: 'ENFP 竞选者', zodiac: '双子座', desc0: '✨ 你的本命人格是【INTJ】...', desc1: '💖 你们在精神层面上极具互补性！', desc2: '⚠️ 避坑小提醒：多一点耐心。', desc3: '💡 互动升温秘诀：尝试新鲜活动。' },
-    'INTP': { type: 'ENTJ 指挥官', zodiac: '狮子座', desc0: '✨ 你的本命人格是【INTP】...', desc1: '💖 你们拥有极其硬核的智力吸引！', desc2: '⚠️ 避坑小提醒：多给肯定。', desc3: '💡 互动升温秘诀：多赞赏。' },
-    'ESTP': { type: 'ISFJ 守卫者', zodiac: '双鱼座', desc0: '✨ 你的本命人格是【ESTP】~ 另一半往往自带【温柔包容、极具耐心】的特质！', desc1: '💖 你们的组合充满宿命感！', desc2: '⚠️ 避坑小提醒：多给承诺。', desc3: '💡 互动升温秘诀：手挽手散步。' }
+    'INTJ': { 
+      type: 'ENFP 竞选者', zodiac: '双子座', 
+      desc0: '✨ 你的本命灵魂伴侣是【ENFP】~ 另一半往往自带【脑洞大开、充满热情、治愈系阳光】的特质，能轻易融化你的高冷防线！', 
+      desc1: '💖 你们在精神层面上极具互补性！你的理性深沉与TA的灵动跳跃完美契合，属于“高级智性恋”的天花板组合。', 
+      desc2: '⚠️ 避坑小提醒：INTJ有时过于追求逻辑和冰冷事实，容易无意中泼TA冷水。多给TA一些情绪价值和肯定的拥抱哦。', 
+      desc3: '💡 互动升温秘诀：偶尔抛开严谨的计划，和TA一起去尝试从未体验过的新鲜活动或来一场说走就走的旅行。' 
+    },
+    'INTP': { 
+      type: 'ENTJ 指挥官', zodiac: '狮子座', 
+      desc0: '✨ 你的本命灵魂伴侣是【ENTJ】~ 另一半往往自带【杀伐果断、极具领导力、目标感极强】的特质，能带着你跳出舒适圈！', 
+      desc1: '💖 你们拥有极其硬核的智力吸引！两个聪明大脑的碰撞能擦出无限火花，在宏大愿景和深度探讨上志同道合。', 
+      desc2: '⚠️ 避坑小提醒：INTP喜欢拖延和思考，而ENTJ雷厉风行。注意避免因生活节奏不一致而产生催促带来的摩擦。', 
+      desc3: '💡 互动升温秘诀：在TA高强度输出时给予崇拜的眼神，或者一起泡图书馆/书店享受安静的高质量陪伴。' 
+    },
+    'ENTJ': { 
+      type: 'INTP 逻辑学家', zodiac: '水瓶座', 
+      desc0: '✨ 你的本命灵魂伴侣是【INTP】~ 另一半往往自带【思维敏捷、极度纯粹、满腹经纶】的特质，能给你提供源源不断的新奇视角！', 
+      desc1: '💖 强强联合的灵魂共振！TA虽不擅长柴米油盐，但在思想深度和灵魂默契上能完全跟上你的节奏，懂你的野心与孤独。', 
+      desc2: '⚠️ 避坑小提醒：ENTJ习惯掌控全局，而INTP极其讨厌被指指点点。给予对方足够的自由精神空间，关系才能长久。', 
+      desc3: '💡 互动升温秘诀：互相分享最近读过的硬核好书或科技前沿话题，来一场深夜的灵魂辩论与交心。' 
+    },
+    'ENTP': { 
+      type: 'INFJ 提倡者', zodiac: '天蝎座', 
+      desc0: '✨ 你的本命灵魂伴侣是【INFJ】~ 另一半往往自带【神秘深邃、情感细腻、能看穿你所有伪装】的特质，是世间难得的灵魂知己！', 
+      desc1: '💖 宿命感拉满的神仙组合！外向跳脱的你碰上内敛深情的TA，就像风遇到了山，彼此被深深吸引且能够灵魂共振。', 
+      desc2: '⚠️ 避坑小提醒：ENTP随口开的玩笑或跳跃的思维，可能会让心思细腻的INFJ暗自内耗。多照顾TA的敏感神经。', 
+      desc3: '💡 互动升温秘诀：给TA毫无保留的安全感，在公众场合大方秀恩爱，满足TA对忠诚与唯一性的执着。' 
+    },
+    'INFJ': { 
+      type: 'ENTP 辩论家', zodiac: '双子座', 
+      desc0: '✨ 你的本命灵魂伴侣是【ENTP】~ 另一半往往自带【有趣灵魂、幽默风趣、脑洞突破天际】的特质，能瞬间点亮你的精神世界！', 
+      desc1: '💖 治愈与被治愈的双向奔赴！TA能用满格的活力和快乐把你的敏感和悲观情绪一扫而空，带你看到世界好玩的一面。', 
+      desc2: '⚠️ 避坑小提醒：INFJ习惯默默隐忍，而ENTP大大咧咧。有不开心一定要直说，千万别让TA去猜谜。', 
+      desc3: '💡 互动升温秘诀：陪TA一起疯、一起探讨各种脑洞大开的奇葩假设，让生活充满新鲜感与欢声笑语。' 
+    },
+    'INFP': { 
+      type: 'ENFJ 主人公', zodiac: '双鱼座', 
+      desc0: '✨ 你的本命灵魂伴侣是【ENFJ】~ 另一半往往自带【温暖体贴、极具包容力、自带小太阳属性】的特质，把你的敏感当成宝贝呵护！', 
+      desc1: '💖 温暖极致的治愈系恋爱！TA会坚定不移地选择你、守护你的精神小世界，给你全天下最稳稳的幸福和安全感。', 
+      desc2: '⚠️ 避坑小提醒：INFP容易陷入内耗和小剧场，ENFJ则爱讲大道理。这时候TA只要默默抱抱你、给你买好吃的就行。', 
+      desc3: '💡 互动升温秘诀：一起去听音乐会、看夕阳，或者做一些浪漫且有仪式感的手工艺品，满足文艺幻想。' 
+    },
+    'ENFJ': { 
+      type: 'INFP 调停者', zodiac: '巨蟹座', 
+      desc0: '✨ 你的本命灵魂伴侣是【INFP】~ 另一半往往自带【纯粹善良、充满诗意、灵魂极其温柔】的特质，激发你全部的保护欲与温柔！', 
+      desc1: '💖 灵魂深处的纯爱战神组合！你习惯照顾所有人，但在TA面前，你终于可以卸下防备，像个孩子一样被宠爱。', 
+      desc2: '⚠️ 避坑小提醒：双方都容易情绪化和过度反思，遇到矛盾时切忌冷战，一定要有一方先打破僵局送上台阶。', 
+      desc3: '💡 互动升温秘诀：睡前给TA讲睡前故事，或者在平淡的生活中制造出意料之外的小惊喜和小卡片。' 
+    },
+    'ENFP': { 
+      type: 'INTJ 建筑师', zodiac: '水瓶座', 
+      desc0: '✨ 你的本命灵魂伴侣是【INTJ】~ 另一半往往自带【外冷内热、靠谱沉稳、智商天花板】的特质，能稳稳接住你的所有奇思妙想！', 
+      desc1: '💖 天作之合的磁铁吸引！活泼小狗与高冷猫咪的经典配置，TA虽然嘴硬但对你的偏爱和纵容绝对是满分。', 
+      desc2: '⚠️ 避坑小提醒：ENFP喜欢社交和热闹，INTJ更爱清静。不要强迫TA去人多嘈杂的社交场合，给彼此适度自由。', 
+      desc3: '💡 互动升温秘诀：带TA接触新鲜事物，同时在TA陷入深度思考时，递上一杯温水默默陪在身边。' 
+    },
+    'ISTJ': { 
+      type: 'ESFP 表演者', zodiac: '金牛座', 
+      desc0: '✨ 你的本命灵魂伴侣是【ESFP】~ 另一半往往自带【热情似火、生活情趣拉满、社交小达人】的特质，为你的生活注入无限烟火气！', 
+      desc1: '💖 严谨与活泼的完美中和！稳重的你管大局，灵动的TA带你体验生活的各种乐趣，让平淡日子变得五彩斑斓。', 
+      desc2: '⚠️ 避坑小提醒：ISTJ习惯按部就班，ESFP有时随性散漫。切记不要总试图用条条框框去束缚TA的天性。', 
+      desc3: '💡 互动升温秘诀：听从TA的安排去品尝网红美食或看一场露天演出，偶尔打破常规会有意想不到的浪漫。' 
+    },
+    'ISFJ': { 
+      type: 'ESTP 企业家', zodiac: '巨蟹座', 
+      desc0: '✨ 你的本命灵魂伴侣是【ESTP】~ 另一半往往自带【果断勇敢、男友力/女友力爆棚、执行力超强】的特质，能替你遮风挡雨！', 
+      desc1: '💖 踏实与热烈的化学反应！你用细致入微的照顾温暖TA，而TA用强大的行动力和保护欲让你倍感安心。', 
+      desc2: '⚠️ 避坑小提醒：ISFJ操心太多容易内耗，而ESTP比较大条。有需求要直接说出来，闷在心里对方是察觉不到的。', 
+      desc3: '💡 互动升温秘诀：把日常家务分工明确，然后周末一起享受一顿由TA掌勺或精心挑选的大餐。' 
+    },
+    'ESTJ': { 
+      type: 'ISFP 探险家', zodiac: '摩羯座', 
+      desc0: '✨ 你的本命灵魂伴侣是【ISFP】~ 另一半往往自带【温柔随性、极具艺术审美、内心丰盈】的特质，带你发现生活的美学！', 
+      desc1: '💖 责任与温柔的港湾！你在外披荆斩棘冲锋陷阵，而TA永远在家为你点一盏灯，抚平你所有的疲惫与紧绷。', 
+      desc2: '⚠️ 避坑小提醒：ESTJ做事雷厉风行讲究效率，ISFP节奏较慢。千万别用命令的语气对TA说话，要多用温柔商量的口吻。', 
+      desc3: '💡 互动升温秘诀：陪TA去大自然里露营、看画展或摄影，体验慢节奏的浪漫，让紧绷的神经彻底放松。' 
+    },
+    'ESFJ': { 
+      type: 'ISTP 鉴赏家', zodiac: '处女座', 
+      desc0: '✨ 你的本命灵魂伴侣是【ISTP】~ 另一半往往自带【冷静理性、动手能力极强、清冷酷盖】的特质，给你无死角的安全感！', 
+      desc1: '💖 互补互吸的甜蜜暴击！虽然TA不爱说甜言蜜语，但生活中的修水管、搬东西等硬核小事绝对安排得明明白白。', 
+      desc2: '⚠️ 避坑小提醒：ESFJ热衷经营社交与情绪反馈，ISTP则需要大量独处时间。给TA空间，就是对感情最好的维护。', 
+      desc3: '💡 互动升温秘诀：不给TA太大的情绪压力，在TA专注自己爱好时默默送上一杯热咖啡，就是最高级的浪漫。' 
+    },
+    'ISTP': { 
+      type: 'ESFJ 执政官', zodiac: '天蝎座', 
+      desc0: '✨ 你的本命灵魂伴侣是【ESFJ】~ 另一半往往自带【社交天花板、热心肠、无微不至的照顾】的特质，把你的生活起居安排得井井有条！', 
+      desc1: '💖 外热内冷的绝配组合！TA用满腔的热情融化你的冰山，而你在关键时刻的沉着冷静给TA吃下定心丸。', 
+      desc2: '⚠️ 避坑小提醒：ISTP嫌麻烦、不爱报备，这会让缺乏安全感的ESFJ焦虑。出门前发个定位，能省去很多不必要的吵架。', 
+      desc3: '💡 互动升温秘诀：带TA去体验惊险刺激的户外项目，并在结束后给予温柔的拥抱与夸奖。' 
+    },
+    'ISFP': { 
+      type: 'ESTJ 总经理', zodiac: '金牛座', 
+      desc0: '✨ 你的本命灵魂伴侣是【ESTJ】~ 另一半往往自带【靠谱担当、执行力拉满、把未来规划得明明白白】的特质，给你稳稳的依靠！', 
+      desc1: '💖 浪漫与现实的完美契合！随性洒脱的你配上严谨务实的TA，生活既有诗和远方，又有柴米油盐的安稳保障。', 
+      desc2: '⚠️ 避坑小提醒：ESTJ有时说话比较直接、注重结果。ISFP不要过分走心，看清TA刀子嘴豆腐心的本质即可。', 
+      desc3: '💡 互动升温秘诀：给TA亲手做一顿饭或手作礼物，用独特的审美和浪漫融化TA理性的外壳。' 
+    },
+    'ESTP': { 
+      type: 'ISFJ 守卫者', zodiac: '双鱼座', 
+      desc0: '✨ 你的本命灵魂伴侣是【ISFJ】~ 另一半往往自带【温柔包容、极具耐心、居家贤惠】的特质，能包容你所有的疯玩与孩子气！', 
+      desc1: '💖 充满宿命感的互补良缘！爱冒险、像风一样的你，终于在TA身上找到了停泊的港湾和无条件被偏爱的底气。', 
+      desc2: '⚠️ 避坑小提醒：ESTP热衷新鲜刺激，容易忽略ISFJ细腻敏感的小情绪。多给承诺，多花时间陪TA聊聊心里话。', 
+      desc3: '💡 互动升温秘诀：在一个安静的夜晚手挽手散步，或者给TA一个霸道而深情的拥抱，让TA知道你心里只有TA。' 
+    },
+    'ESFP': { 
+      type: 'ISTJ 物流师', zodiac: '摩羯座', 
+      desc0: '✨ 你的本命灵魂伴侣是【ISTJ】~ 另一半往往自带【极度专一、踏实稳重、默默付出的老实人】的特质，是你的坚强后盾！', 
+      desc1: '💖 欢快与稳重的奇妙碰撞！爱秀、爱热闹的你身边需要这样一个能帮你把关、理财且永远忠诚的靠谱伴侣。', 
+      desc2: '⚠️ 避坑小提醒：ESFP花钱大手大脚、追求当下快乐，ISTJ则精打细算。在财务和消费观上要学会互相尊重妥协。', 
+      desc3: '💡 互动升温秘诀：带TA体验一次好玩的热闹派对，并在私下里表现出你对TA深深的依赖和崇拜。' 
+    }
   };
-  ['ENTJ','ENTP','INFJ','INFP','ENFJ','ENFP','ISTJ','ISFJ','ESTJ','ESFJ','ISTP','ISFP','ESFP'].forEach(k => {
-    if(!targetMap[k]) targetMap[k] = { type: 'INFJ 提倡者', zodiac: '天蝎座', desc0: '✨ 完美契合的灵魂伴侣~', desc1: '💖 默契十足，双向奔赴。', desc2: '⚠️ 避免冷战，多加沟通。', desc3: '💡 享受独处与陪伴。' };
-  });
 
   function showQRCode() { document.getElementById('qrModal').style.display = 'flex'; }
   function hideQRCode() { document.getElementById('qrModal').style.display = 'none'; }
@@ -569,7 +676,6 @@ button.submit-btn:active { transform: scale(0.98); }
     }, 3500);
 
     try {
-      // 核心修改：将表名从 codes 改为你的真实表名 cloudflare-lovetest
       const { data: codeRecords, error: fetchError } = await window.mySupabaseClient
         .from('cloudflare-lovetest')
         .select('*')
@@ -621,6 +727,7 @@ button.submit-btn:active { transform: scale(0.98); }
       if (!answered) { alert(`还有未完成的题目哦！请检查第 ${i} 题。`); return; }
     }
 
+    // 千人千面：根据用户选的 MBTI 提取专属文案！
     const targetInfo = targetMap[mbti] || targetMap['ESTP'];
     const randomScore = (Math.random() * (99.9 - 92.5) + 92.5).toFixed(1);
 
@@ -645,7 +752,6 @@ button.submit-btn:active { transform: scale(0.98); }
 
     if (currentCode) {
       try {
-        // 核心修改：提交状态更新时也同步使用 cloudflare-lovetest 表
         await window.mySupabaseClient.from('cloudflare-lovetest').update({ 
           status: 'used', 
           used_at: new Date().toISOString(),
