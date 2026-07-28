@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>💖 测测命中另一半的星座与MBTI</title>
+<!-- 引入 Supabase 客户端 SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root {
+  --primary-gradient: linear-gradient(135deg, #ff758f 0%, #ff4d6d 100%);
+  --bg-gradient: linear-gradient(135deg, #fff0f3 0%, #f3e8ff 100%);
+  --card-bg: #ffffff;
+  --text-main: #2b2d42;
+  --text-sub: #8d99ae;
+  --accent-bg: #fff5f7;
+  --border-color: #ffccd5;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background: var(--bg-gradient);
+  color: var(--text-main);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  padding: 8px 16px 32px 16px;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.romantic-header-art {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  height: 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 12px;
+  pointer-events: none;
+}
+
+.art-heart {
+  width: 10px;
+  height: 10px;
+  background: #ff4d6d;
+  transform: rotate(45deg);
+  position: relative;
+  animation: pulseGlow 2s ease-in-out infinite alternate;
+  opacity: 0.7;
+}
+
+.art-heart::before,
+.art-heart::after {
+  content: '';
+  width: 10px;
+  height: 10px;
+  background: #ff4d6d;
+  border-radius: 50%;
+  position: absolute;
+}
+
+.art-heart::before {
+  left: -5px;
+  top: 0;
+}
+
+.art-heart::after {
+  left: 0;
+  top: -5px;
+}
+
+.art-star {
+  width: 12px;
+  height: 12px;
+  background: #ffb703;
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  animation: starTwinkle 1.5s ease-in-out infinite alternate;
+  opacity: 0.8;
+}
+
+.art-bubble {
+  width: 16px;
+  height: 10px;
+  background: #ff758f;
+  border-radius: 6px;
+  position: relative;
+  opacity: 0.5;
+  animation: floatUp 3s ease-in-out infinite alternate;
+}
+
+.art-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 4px;
+  width: 0;
+  height: 0;
+  border-left: 3px solid transparent;
+  border-right: 3px solid transparent;
+  border-top: 4px solid #ff758f;
+}
+
+@keyframes pulseGlow {
+  0% { transform: rotate(45deg) scale(0.9); opacity: 0.5; }
+  100% { transform: rotate(45deg) scale(1.15); opacity: 0.85; }
+}
+
+@keyframes starTwinkle {
+  0% { transform: scale(0.8) rotate(0deg); opacity: 0.4; }
+  100% { transform: scale(1.1) rotate(15deg); opacity: 0.9; }
+}
+
+@keyframes floatUp {
+  0% { transform: translateY(2px); }
+  100% { transform: translateY(-3px); }
+}
+
+.main-content {
+  width: 100%;
+  max-width: 500px;
+}
+
+.quiz-card {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 22px;
+  box-shadow: 0 15px 35px rgba(255, 77, 109, 0.12);
+  border: 2px solid #ffe5e9;
+  position: relative;
+}
+
+h1 {
+  font-size: 22px;
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 6px;
+  text-align: center;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+}
+
+p.subtitle {
+  font-size: 13px;
+  color: var(--text-sub);
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: 500;
+}
+
+.form-group {
+  margin-bottom: 18px;
+  text-align: left;
+}
+
+label.question-title {
+  display: block;
+  font-size: 14.5px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--text-main);
+  line-height: 1.4;
+}
+
+select {
+  width: 100%;
+  padding: 12px;
+  border: 1.5px solid var(--border-color);
+  border-radius: 12px;
+  background-color: var(--accent-bg);
+  font-size: 14px;
+  color: var(--text-main);
+  outline: none;
+  font-weight: 600;
+}
+
+button.submit-btn {
+  width: 100%;
+  padding: 16px;
+  background: var(--primary-gradient);
+  color: #fff;
+  border: none;
+  border-radius: 14px;
+  font-size: 17px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+  box-shadow: 0 6px 20px rgba(255, 77, 109, 0.35);
+  letter-spacing: 1px;
+}
+
+button.submit-btn:active {
+  transform: scale(0.98);
+}
+
+#result {
+  margin-top: 10px;
+  display: none;
+}
+
+.share-card {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 22px;
+  box-shadow: 0 15px 35px rgba(255, 77, 109, 0.15);
+  border: 2px solid #ffe5e9;
+  position: relative;
+}
+
+.poster-header {
+  text-align: center;
+  margin-bottom: 16px;
+  padding-bottom: 14px;
+  border-bottom: 1.5px dashed var(--border-color);
+}
+
+.poster-tag {
+  display: inline-block;
+  background: var(--primary-gradient);
+  color: #fff;
+  padding: 4px 14px;
+  border-radius: 18px;
+  font-size: 11.5px;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+.user-badge {
+  font-size: 13px;
+  color: var(--text-sub);
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.user-badge span {
+  color: #ff4d6d;
+  font-weight: bold;
+}
+
+.match-target {
+  font-size: 18px;
+  color: var(--text-main);
+  font-weight: 900;
+  line-height: 1.4;
+}
+
+.match-target-highlight {
+  color: #ff4d6d;
+  font-size: 21px;
+  display: block;
+  margin-top: 4px;
+}
+
+.score-badge {
+  background: var(--accent-bg);
+  border: 1.5px solid #ffccd5;
+  border-radius: 12px;
+  padding: 10px;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.score-num {
+  font-size: 24px;
+  font-weight: 900;
+  color: #ff4d6d;
+}
+
+.score-sub {
+  font-size: 12px;
+  color: var(--text-sub);
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+.analysis-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.analysis-item {
+  background: #fff8f9;
+  border-left: 4px solid #ff4d6d;
+  border-radius: 0 12px 12px 0;
+  padding: 12px 14px;
+}
+
+.item-title {
+  font-size: 13.5px;
+  font-weight: 800;
+  color: #ff4d6d;
+  margin-bottom: 4px;
+}
+
+.item-desc {
+  font-size: 13px;
+  line-height: 1.5;
+  color: #4a4e69;
+  font-weight: 500;
+}
+
+.poster-footer {
+  padding-top: 14px;
+  border-top: 1.5px solid #f0f0f5;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-brand .brand-name {
+  font-size: 12px;
+  font-weight: bold;
+  color: var(--text-main);
+}
+
+.footer-brand .brand-sub {
+  font-size: 10px;
+  color: #aaa;
+}
+
+.contact-btn {
+  background: linear-gradient(135deg, #ff758f 0%, #ff4d6d 100%);
+  color: #fff;
+  font-size: 11.5px;
+  padding: 6px 14px;
+  border-radius: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 3px 10px rgba(255, 77, 109, 0.3);
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  white-space: nowrap;
+}
+
+.qr-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(5px);
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+}
+
+.qr-card {
+  background: #fff;
+  padding: 28px 24px;
+  border-radius: 20px;
+  text-align: center;
+  width: 85%;
+  max-width: 310px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.qr-card h3 {
+  font-size: 17px;
+  color: #2b2d42;
+  margin-bottom: 6px;
+}
+
+.qr-card p {
+  font-size: 12.5px;
+  color: #8d99ae;
+  margin-bottom: 16px;
+}
+
+.wechat-box {
+  background: #fff0f3;
+  border: 1.5px dashed #ff4d6d;
+  color: #ff4d6d;
+  font-size: 17px;
+  font-weight: 900;
+  padding: 12px;
+  border-radius: 12px;
+  margin-bottom: 14px;
+  user-select: all;
+}
+
+.close-btn {
+  background: var(--primary-gradient);
+  color: #fff;
+  border: none;
+  padding: 13px 24px;
+  border-radius: 14px;
+  font-weight: bold;
+  font-size: 14.5px;
+  cursor: pointer;
+  width: 100%;
+  box-shadow: 0 5px 15px rgba(255, 77, 109, 0.35);
+}
+
+.error-card {
+  background: #fff;
+  border-radius: 20px;
+  padding: 30px 20px;
+  box-shadow: 0 15px 35px rgba(255, 77, 109, 0.12);
+  border: 2px solid #ffe5e9;
+  text-align: center;
+}
+</style>
+</head>
+<body>
+
+<div class="romantic-header-art">
+  <div class="art-heart"></div>
+  <div class="art-bubble"></div>
+  <div class="art-star"></div>
+  <div class="art-heart"></div>
+</div>
+
+<div class="main-content" id="mainContainer">
+  <!-- 校验加载与提示区域 -->
+  <div id="loadingView" style="text-align: center; padding: 60px 20px;">
+    <p style="color: #ff4d6d; font-size: 16px; font-weight: bold;" id="loadingText">正在安全校验专属链接...</p>
+  </div>
+
+  <!-- 测试问卷与结果区域（默认隐藏，校验通过后显示） -->
+  <div id="contentView" style="display: none;">
+    <div class="quiz-card" id="quizSection">
+      <h1>💖 测测命中另一半的星座与MBTI</h1>
+      <p class="subtitle">仅供娱乐，如不雷同概不负责（嘿嘿😁</p>
+
+      <div class="form-group">
+        <label class="question-title">你的初始 MBTI 类型：</label>
+        <select id="mbti">
+          <option value="" disabled selected style="color: #999;">请选择你的 MBTI 类型</option>
+          <option value="INTJ">INTJ 建筑师</option>
+          <option value="INTP">INTP 逻辑学家</option>
+          <option value="ENTJ">ENTJ 指挥官</option>
+          <option value="ENTP">ENTP 辩论家</option>
+          <option value="INFJ">INFJ 提倡者</option>
+          <option value="INFP">INFP 调停者</option>
+          <option value="ENFJ">ENFJ 主人公</option>
+          <option value="ENFP">ENFP 竞选者</option>
+          <option value="ISTJ">ISTJ 物流师</option>
+          <option value="ISFJ">ISFJ 守卫者</option>
+          <option value="ESTJ">ESTJ 总经理</option>
+          <option value="ESFJ">ESFJ 执政官</option>
+          <option value="ISTP">ISTP 鉴赏家</option>
+          <option value="ISFP">ISFP 探险家</option>
+          <option value="ESTP">ESTP 企业家</option>
+          <option value="ESFP">ESFP 表演者</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="question-title">你的太阳星座：</label>
+        <select id="zodiac">
+          <option value="" disabled selected style="color: #999;">请选择你的太阳星座</option>
+          <option value="白羊座">白羊座 (03.21 - 04.19)</option>
+          <option value="金牛座">金牛座 (04.20 - 05.20)</option>
+          <option value="双子座">双子座 (05.21 - 06.21)</option>
+          <option value="巨蟹座">巨蟹座 (06.22 - 07.22)</option>
+          <option value="狮子座">狮子座 (07.23 - 08.22)</option>
+          <option value="处女座">处女座 (08.23 - 09.22)</option>
+          <option value="天秤座">天秤座 (09.23 - 10.23)</option>
+          <option value="天蝎座">天蝎座 (10.24 - 11.22)</option>
+          <option value="射手座">射手座 (11.23 - 12.21)</option>
+          <option value="摩羯座">摩羯座 (12.22 - 01.19)</option>
+          <option value="水瓶座">水瓶座 (01.20 - 02.18)</option>
+          <option value="双鱼座">双鱼座 (02.19 - 03.20)</option>
+        </select>
+      </div>
+
+      <hr style="border: 0; border-top: 1.5px dashed var(--border-color); margin: 20px 0;">
+      <button class="submit-btn" onclick="calculateMatch()">查看结果 ✨</button>
+    </div>
+
+    <div id="result">
+      <div class="share-card">
+        <div class="poster-header">
+          <span class="poster-tag">🔮 星座与MBTI · 双重恋爱基因测算</span>
+          <div class="user-badge">我的性格：<span id="userAttr">ESTP × 白羊座</span></div>
+          <div class="match-target">
+            命中注定另一半
+            <span class="match-target-highlight" id="targetType">ISFJ 守卫者 × 双鱼座</span>
+          </div>
+        </div>
+
+        <div class="score-badge">
+          <div class="score-num" id="scoreNum">98.6%</div>
+          <div class="score-sub">💞 灵魂契合指数 · 命中注定的双向奔赴</div>
+        </div>
+
+        <div class="analysis-list">
+          <div class="analysis-item">
+            <div class="item-title">另一半画像</div>
+            <div class="item-desc" id="desc0">加载中...</div>
+          </div>
+          <div class="analysis-item">
+            <div class="item-title">灵魂默契</div>
+            <div class="item-desc" id="desc1">加载中...</div>
+          </div>
+          <div class="analysis-item">
+            <div class="item-title">避坑指南</div>
+            <div class="item-desc" id="desc2">加载中...</div>
+          </div>
+          <div class="analysis-item">
+            <div class="item-title">升温建议</div>
+            <div class="item-desc" id="desc3">加载中...</div>
+          </div>
+        </div>
+
+        <div class="poster-footer">
+          <div class="footer-brand">
+            <div class="brand-name">测测命中另一半的星座与MBTI</div>
+            <div class="brand-sub">仅供娱乐，如不雷同概不负责</div>
+          </div>
+          <button class="contact-btn" onclick="showQRCode()">💬 此处有惊喜</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="qr-modal" id="qrModal">
+  <div class="qr-card">
+    <h3>💬 联系美丽的开发者</h3>
+    <p>长按或点击下方复制微信号</p>
+    <div class="wechat-box">SleepToSleepy</div>
+    <button class="close-btn" onclick="hideQRCode()">马上去，我倒是要看看</button>
+  </div>
+</div>
+
+<script>
+  // Supabase 凭证配置
+  const SUPABASE_URL = 'https://hrgzmwtgpacdxifcevwy.supabase.co'; 
+  const SUPABASE_ANON_KEY = 'sb_publishable_4XcXlLh77BtvmIajOGbpPA_T7d6b9fu';
+  const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  const targetMap = {
+    'ESTP': {
+      type: 'ISFJ 守卫者',
+      zodiac: '双鱼座',
+      desc0: '✨ 你的本命人格是【ESTP】~ 另一半往往自带【温柔包容、极具耐心】的特质！',
+      desc1: '💖 你们的组合充满宿命感！【双鱼座】的柔情似水与无条件包容，能瞬间融化你外表的玩世不恭。',
+      desc2: '⚠️ 避坑小提醒：ESTP性格直爽、玩起来容易忘形，有时会忽略双鱼座敏感脆弱的内心。',
+      desc3: '💡 互动升温秘诀：在外疯玩过后，推掉不必要的局，和双鱼座手挽手散步回家。'
+    }
+  };
+
+  function showQRCode() {
+    document.getElementById('qrModal').style.display = 'flex';
+  }
+
+  function hideQRCode() {
+    document.getElementById('qrModal').style.display = 'none';
+  }
+
+  function calculateMatch() {
+    const mbti = document.getElementById('mbti').value;
+    const zodiac = document.getElementById('zodiac').value;
+    if (!mbti || !zodiac) {
+      alert('请先选择你的MBTI和星座哦~');
+      return;
+    }
+    const data = targetMap[mbti] || targetMap['ESTP'];
+    renderResult({
+      userAttr: mbti + ' × ' + zodiac,
+      targetType: data.type + ' × ' + data.zodiac,
+      scoreNum: '98.6',
+      desc0: data.desc0,
+      desc1: data.desc1,
+      desc2: data.desc2,
+      desc3: data.desc3
+    });
+    document.getElementById('quizSection').style.display = 'none';
+    document.getElementById('result').style.display = 'block';
+  }
+
+  function renderResult(data) {
+    document.getElementById('userAttr').innerText = data.userAttr;
+    document.getElementById('targetType').innerText = data.targetType;
+    document.getElementById('scoreNum').innerText = data.scoreNum + '%';
+    document.getElementById('desc0').innerText = data.desc0;
+    document.getElementById('desc1').innerText = data.desc1;
+    document.getElementById('desc2').innerText = data.desc2;
+    document.getElementById('desc3').innerText = data.desc3;
+  }
+
+  // 核心：页面加载时自动核销校验
+  window.addEventListener('DOMContentLoaded', async () => {
+    const loadingText = document.getElementById('loadingText');
+    const loadingView = document.getElementById('loadingView');
+    const contentView = document.getElementById('contentView');
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get('code');
+
+    if (!code) {
+      loadingText.innerHTML = '❌ <span style="color:#c62828;">访问拒绝：链接中缺少必要的验证密钥。</span>';
+      return;
+    }
+
+    try {
+      // 1. 在 cloudflare-lovetest 表中精准查找带有当前 code 的链接记录
+      const { data, error } = await supabaseClient
+        .from('cloudflare-lovetest')
+        .select('*')
+        .ilike('链接', `%code=${code}%`)
+        .single();
+
+      if (error || !data) {
+        loadingText.innerHTML = '❌ <span style="color:#c62828;">链接无效或该密钥不存在。</span>';
+        return;
+      }
+
+      // 2. 检查是否已经核销
+      if (data.是否核销 === '已核销') {
+        loadingText.innerHTML = '⚠️ <span style="color:#c62828;">该密钥已经被使用过了，无法重复核销！</span>';
+        return;
+      }
+
+      // 3. 校验通过：更新状态为“已核销”，记录核销时间
+      const nowTime = new Date().toLocaleString();
+      await supabaseClient
+        .from('cloudflare-lovetest')
+        .update({ 
+          是否核销: '已核销', 
+          核销时间: nowTime 
+        })
+        .eq('id', data.id);
+
+      // 4. 验证成功，隐藏加载提示，展示测试界面
+      loadingView.style.display = 'none';
+      contentView.style.display = 'block';
+
+    } catch (err) {
+      console.error(err);
+      loadingText.innerHTML = '❌ <span style="color:#c62828;">网络异常或系统开小差了，请稍后再试。</span>';
+    }
+  });
+</script>
+</body>
+</html>
