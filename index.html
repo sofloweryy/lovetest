@@ -35,12 +35,12 @@
       display: inline-block;
       margin-bottom: 12px;
       font-weight: bold;
-      animation: pulseGlow 2s infinite ease-in-out;
+      box-shadow: 0 4px 12px rgba(184, 115, 255, 0.3);
+      animation: floatBadge 3s ease-in-out infinite;
     }
-    @keyframes pulseGlow {
-      0% { transform: scale(1); box-shadow: 0 0 0 rgba(184, 115, 255, 0.4); }
-      50% { transform: scale(1.03); box-shadow: 0 0 12px rgba(255, 126, 179, 0.6); }
-      100% { transform: scale(1); box-shadow: 0 0 0 rgba(184, 115, 255, 0.4); }
+    @keyframes floatBadge {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-3px); }
     }
     .subtitle {
       color: #666;
@@ -59,7 +59,6 @@
       padding: 14px;
       margin-bottom: 15px;
       background-color: #f4f8ff;
-      transition: all 0.3s ease;
     }
     .score-box {
       border: 2px solid #ffb6c1;
@@ -126,27 +125,27 @@
 <body>
 
   <div class="container" id="app">
-    <!-- 顶部动态发光小表情/标签栏 -->
+    <!-- 顶部动态发光胶囊标签 -->
     <div>
       <span class="header-tag" id="headerTag">🔮 星座与 MBTI · 双重恋爱基因测算</span>
     </div>
     
-    <!-- 用户性格展示（支持通过 URL 参数或动态切换） -->
+    <!-- 用户性格 -->
     <div class="subtitle">我的性格：<span id="userPersona" style="font-weight:bold; color:#333;">INTJ × 金牛座</span></div>
     <div class="main-title">命中注定另一半</div>
 
-    <!-- 另一半匹配结果展示框 -->
+    <!-- 另一半匹配结果框 -->
     <div class="box">
       <div id="targetPersona" style="font-size: 18px; font-weight: bold; color: #2b6cb0;">ENFP 竞选者 × 双子座</div>
     </div>
 
-    <!-- 契合指数展示框 -->
+    <!-- 契合指数框 -->
     <div class="score-box">
-      <div style="font-size: 12px; color: #666;" id="scoreTitle">💖 灵魂契合指数 · 命中注定的双向奔赴</div>
+      <div style="font-size: 12px; color: #666;">💖 灵魂契合指数 · 命中注定的双向奔赴</div>
       <div class="score-num" id="scoreDisplay">96.7%</div>
     </div>
 
-    <!-- 核心精修文案卡片区域 -->
+    <!-- 四大精修文案卡片 -->
     <div class="section-card">
       <div class="section-card-title">另一半画像</div>
       <div class="section-card-content" id="descPortrait">加载中...</div>
@@ -167,7 +166,7 @@
       <div class="section-card-content" id="descWarm">加载中...</div>
     </div>
 
-    <!-- 底部区域 -->
+    <!-- 底部 -->
     <div class="footer-area">
       <div class="footer-note">
         测测命中另一半的星座与MBTI<br>仅供娱乐，如不雷同概不负责（嘿嘿😄
@@ -177,11 +176,11 @@
   </div>
 
   <script>
-    // 1. 全面深度优化的多组合匹配文案数据库（覆盖所有主流及主流用户可能测出的组合）
+    // 覆盖全主流性格的精修文案数据库
     const matchDatabase = {
       "INTJ": {
+        header: "✨ 灵犀闪烁 · 专属智性恋基因测算",
         userText: "INTJ × 金牛座",
-        headerText: "✨ 灵犀闪烁 · 专属智性恋基因库",
         target: "ENFP 竞选者 × 双子座",
         score: "96.7%",
         portrait: "✨ 你的本命灵魂伴侣是【ENFP 竞选者 × 双子座】——兼具风象星座的灵动跳跃与火象般的热情。TA自带“脑洞大开、极具情绪感染力、对世界充满强烈好奇”的特质，能用无孔不入的趣味与阳光，完美融化金牛座的慢热与 INTJ 的理智高冷。",
@@ -190,8 +189,8 @@
         warm: "💡 互动升温秘诀：金牛座与 INTJ 往往习惯于按部就班的舒适区，而感情升温的关键在于“主动打破常规”。不妨尝试和 TA 一起去体验从未涉足过的新鲜活动，或者来一场说走就走的即兴短途旅行，在充满新鲜感的轻松旅途中收获加倍的心动。"
       },
       "ESTP": {
+        header: "🔥 炽热碰撞 · 能量满格的冒险基因测算",
         userText: "ESTP × 白羊座",
-        headerText: "🔥 热烈碰撞 · 能量满格的冒险契合",
         target: "ISFJ 守卫者 × 双鱼座",
         score: "97.3%",
         portrait: "✨ 你的本命另一半是标准的【ISFJ 守卫者 × 双鱼座】，自带“温柔包容、极具耐心、敏感细腻、润物细无声”的特质。TA也许不会说特别轰轰烈烈的情话，但会在生活的细微处给你最稳妥的照顾。",
@@ -200,46 +199,35 @@
         warm: "💡 互动升温秘诀：深夜掏心窝的聊天，或一起布置温馨小窝。相比于大风大浪的刺激活动，TA 更享受安静、具有仪式感的相处，能让TA感受到被爱包围的幸福。"
       },
       "ENFP": {
+        header: "🌟 浪漫风暴 · 双倍灵动的双向奔赴测算",
         userText: "ENFP × 双子座",
-        headerText: "🌟 浪漫风暴 · 双倍灵动的双向奔赴",
         target: "INTJ 建筑师 × 摩羯座",
         score: "97.1%",
         portrait: "✨ 你的本命灵魂伴侣是【INTJ 建筑师 × 摩羯座】。看似严谨沉稳、不苟言笑，实则内心有着极其坚定专一的内核。TA就像一块磁石，能够稳稳兜住你所有的天马行空与情绪起伏。",
         synergy: "💖 充满安全感的完美互补！你的热情与浪漫能够彻底点亮对方沉闷的世界，而对方过硬的执行力与周全的计划，则能为你所有的梦想提供最稳固的现实着陆点。",
         avoid: "⚠️ 避坑小提醒：不要嫌弃 TA 的理性泼冷水或过于注重效率。当 TA 试图帮你分析问题时，其实是 TA 笨拙却真诚的爱意表达方式。",
         warm: "💡 互动升温秘诀：带 TA 融入你热闹的朋友圈，或者一起策划一场充满烟火气的温馨手作，在动静结合中体会相处最舒服的节奏。"
-      },
-      "INFJ": {
-        userText: "INFJ × 天蝎座",
-        headerText: "🌙 灵魂深海 · 极致默契的心灵感应",
-        target: "ENTP 辩论家 × 巨蟹座",
-        score: "96.5%",
-        portrait: "✨ 你的本命另一半是【ENTP 辩论家 × 巨蟹座】。表面上风趣幽默、思维跳跃，内心深处却有着极其柔软恋家的一面。TA能敏锐察觉到你灵魂深处的孤单，并用毫无保留的偏爱融化你的心防。",
-        synergy: "💖 深度智力与情感的双重共振！ENTP 的广阔视野和巨蟹座的温情体贴，与 INFJ 的深邃直觉完美契合，属于精神上能够完全交融的高质量灵魂伴侣。",
-        avoid: "⚠️ 避坑小提醒：切忌过度隐忍和猜忌。INFJ 习惯把话藏在心里，而对方需要直接而温暖的沟通。多表达信任，感情会更加稳固。",
-        warm: "💡 互动升温秘诀：一起看一场烧脑悬疑电影或进行深度漫谈，随后去吃一顿深夜暖心宵夜，在极致的松弛感中拉近彼此距离。"
       }
     };
 
-    // 2. 动态获取逻辑：支持通过 URL 传参（如 ?mbti=ESTP），没有则默认读取 INTJ
-    const urlParams = new URLSearchParams(window.location.search);
-    const queryMbti = urlParams.get('mbti') ? urlParams.get('mbti').toUpperCase() : 'INTJ';
-    
-    const currentData = matchDatabase[queryMbti] || matchDatabase['INTJ'];
+    // 动态路由解析：支持通过 ?mbti=xxx 切换不同性格，默认加载 INTJ
+    const params = new URLSearchParams(window.location.search);
+    const key = params.get('mbti') ? params.get('mbti').toUpperCase() : 'INTJ';
+    const data = matchDatabase[key] || matchDatabase['INTJ'];
 
-    // 3. 渲染数据到页面对应节点
-    document.getElementById('headerTag').innerText = currentData.headerText;
-    document.getElementById('userPersona').innerText = currentData.userText;
-    document.getElementById('targetPersona').innerText = currentData.target;
-    document.getElementById('scoreDisplay').innerText = currentData.score;
-    document.getElementById('descPortrait').innerText = currentData.portrait;
-    document.getElementById('descSynergy').innerText = currentData.synergy;
-    document.getElementById('descAvoid').innerText = currentData.avoid;
-    document.getElementById('descWarm').innerText = currentData.warm;
+    // 渲染文案
+    document.getElementById('headerTag').innerText = data.header;
+    document.getElementById('userPersona').innerText = data.userText;
+    document.getElementById('targetPersona').innerText = data.target;
+    document.getElementById('scoreDisplay').innerText = data.score;
+    document.getElementById('descPortrait').innerText = data.portrait;
+    document.getElementById('descSynergy').innerText = data.synergy;
+    document.getElementById('descAvoid').innerText = data.avoid;
+    document.getElementById('descWarm').innerText = data.warm;
 
-    // 4. 彩蛋交互函数
+    // 彩蛋弹窗
     function triggerEasterEgg() {
-      alert('恭喜你发现了隐藏彩蛋！祝愿你和 ' + currentData.target + ' 永远甜甜蜜蜜，幸福久久！~ ❤️');
+      alert('恭喜你发现了隐藏彩蛋！祝愿你和 ' + data.target + ' 永远甜甜蜜蜜，幸福久久！~ ❤️');
     }
   </script>
 
