@@ -32,7 +32,7 @@ body {
   flex-direction: column;
   align-items: center;
   min-height: 100vh;
-  padding: 8px 16px 32px 16px;
+  padding: 4px 16px 20px 16px;
   position: relative;
   overflow-x: hidden;
 }
@@ -41,7 +41,7 @@ body {
   position: relative;
   width: 100%;
   max-width: 500px;
-  height: 32px;
+  height: 28px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -227,14 +227,14 @@ button.submit-btn {
 button.submit-btn:active { transform: scale(0.98); }
 
 #result {
-  margin-top: 10px;
+  margin-top: 5px;
   display: none;
 }
 
 .share-card {
   background: #ffffff;
   border-radius: 20px;
-  padding: 22px;
+  padding: 16px 18px;
   box-shadow: 0 15px 35px rgba(255, 77, 109, 0.15);
   border: 2px solid #ffe5e9;
   position: relative;
@@ -242,8 +242,8 @@ button.submit-btn:active { transform: scale(0.98); }
 
 .poster-header {
   text-align: center;
-  margin-bottom: 16px;
-  padding-bottom: 14px;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
   border-bottom: 1.5px dashed var(--border-color);
 }
 
@@ -251,81 +251,81 @@ button.submit-btn:active { transform: scale(0.98); }
   display: inline-block;
   background: var(--primary-gradient);
   color: #fff;
-  padding: 4px 14px;
+  padding: 3px 12px;
   border-radius: 18px;
-  font-size: 11.5px;
+  font-size: 11px;
   font-weight: 800;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
 }
 
 .user-badge {
-  font-size: 13px;
+  font-size: 12.5px;
   color: var(--text-sub);
-  margin-bottom: 6px;
+  margin-bottom: 4px;
   font-weight: 500;
 }
 
 .user-badge span { color: #ff4d6d; font-weight: bold; }
 
 .match-target {
-  font-size: 18px;
+  font-size: 16.5px;
   color: var(--text-main);
   font-weight: 900;
-  line-height: 1.4;
+  line-height: 1.3;
 }
 
 .match-target-highlight {
   color: #ff4d6d;
-  font-size: 21px;
+  font-size: 19.5px;
   display: block;
-  margin-top: 4px;
+  margin-top: 2px;
 }
 
 .score-badge {
   background: var(--accent-bg);
   border: 1.5px solid #ffccd5;
   border-radius: 12px;
-  padding: 10px;
+  padding: 8px;
   text-align: center;
-  margin-bottom: 16px;
+  margin-bottom: 10px;
 }
 
-.score-num { font-size: 24px; font-weight: 900; color: #ff4d6d; }
-.score-sub { font-size: 12px; color: var(--text-sub); font-weight: 600; margin-top: 2px; }
+.score-num { font-size: 22px; font-weight: 900; color: #ff4d6d; }
+.score-sub { font-size: 11.5px; color: var(--text-sub); font-weight: 600; margin-top: 1px; }
 
 .analysis-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  margin-bottom: 18px;
+  gap: 8px;
+  margin-bottom: 12px;
 }
 
 .analysis-item {
   background: #fff8f9;
   border-left: 4px solid #ff4d6d;
-  border-radius: 0 12px 12px 0;
-  padding: 12px 14px;
+  border-radius: 0 10px 10px 0;
+  padding: 8px 12px;
 }
 
-.item-title { font-size: 13.5px; font-weight: 800; color: #ff4d6d; margin-bottom: 4px; }
-.item-desc { font-size: 13px; line-height: 1.5; color: #4a4e69; font-weight: 500; }
+.item-title { font-size: 13px; font-weight: 800; color: #ff4d6d; margin-bottom: 2px; }
+.item-desc { font-size: 12.5px; line-height: 1.45; color: #4a4e69; font-weight: 500; }
 
 .poster-footer {
-  padding-top: 14px;
+  padding-top: 10px;
   border-top: 1.5px solid #f0f0f5;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.footer-brand .brand-name { font-size: 12px; font-weight: bold; color: var(--text-main); }
-.footer-brand .brand-sub { font-size: 10px; color: #aaa; }
+.footer-brand .brand-name { font-size: 11.5px; font-weight: bold; color: var(--text-main); }
+.footer-brand .brand-sub { font-size: 9.5px; color: #aaa; }
 
 .contact-btn {
   background: linear-gradient(135deg, #ff758f 0%, #ff4d6d 100%);
   color: #fff;
-  font-size: 11.5px;
-  padding: 6px 14px;
+  font-size: 11px;
+  padding: 6px 12px;
   border-radius: 16px;
   font-weight: bold;
   cursor: pointer;
@@ -483,7 +483,7 @@ button.submit-btn:active { transform: scale(0.98); }
         </div>
 
         <div class="score-badge">
-          <div class="score-num" id="scoreNum">98.6%</div>
+          <div class="score-num" id="scoreNum">98.1%</div>
           <div class="score-sub">💞 灵魂契合指数 · 命中注定的双向奔赴</div>
         </div>
 
@@ -524,7 +524,6 @@ button.submit-btn:active { transform: scale(0.98); }
   const urlParams = new URLSearchParams(window.location.search);
   const currentCode = urlParams.get('code');
 
-  // 全量精简干练的高品质 16 种 MBTI 匹配数据库（彻底去除所有废话开头）
   const targetMap = {
     'INTJ': {
       type: 'ENFP 竞选者', zodiac: '双子座',
