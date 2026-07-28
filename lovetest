@@ -406,6 +406,15 @@ button.submit-btn:active {
   width: 100%;
   box-shadow: 0 5px 15px rgba(255, 77, 109, 0.35);
 }
+
+.error-card {
+  background: #fff;
+  border-radius: 20px;
+  padding: 30px 20px;
+  box-shadow: 0 15px 35px rgba(255, 77, 109, 0.12);
+  border: 2px solid #ffe5e9;
+  text-align: center;
+}
 </style>
 </head>
 <body>
@@ -418,10 +427,12 @@ button.submit-btn:active {
 </div>
 
 <div class="main-content" id="mainContainer">
-  <div id="loadingView" style="text-align: center; padding: 40px 0;">
-    <p style="color: #ff4d6d; font-size: 15px; font-weight: bold;">正在校验专属测算链接...</p>
+  <!-- 校验加载与提示区域 -->
+  <div id="loadingView" style="text-align: center; padding: 60px 20px;">
+    <p style="color: #ff4d6d; font-size: 16px; font-weight: bold;" id="loadingText">正在安全校验专属链接...</p>
   </div>
 
+  <!-- 测试问卷与结果区域（默认隐藏，校验通过后显示） -->
   <div id="contentView" style="display: none;">
     <div class="quiz-card" id="quizSection">
       <h1>💖 测测命中另一半的星座与MBTI</h1>
@@ -530,11 +541,10 @@ button.submit-btn:active {
 </div>
 
 <script>
+  // Supabase 凭证配置
   const SUPABASE_URL = 'https://hrgzmwtgpacdxifcevwy.supabase.co'; 
   const SUPABASE_ANON_KEY = 'sb_publishable_4XcXlLh77BtvmIajOGbpPA_T7d6b9fu';
   const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-  const urlParams = new URLSearchParams(window.location.search);
-  const currentCode = urlParams.get('code');
 
   const targetMap = {
     'ESTP': {
@@ -586,11 +596,57 @@ button.submit-btn:active {
     document.getElementById('desc3').innerText = data.desc3;
   }
 
+  // 核心：页面加载时自动核销校验
   window.addEventListener('DOMContentLoaded', async () => {
+    const loadingText = document.getElementById('loadingText');
     const loadingView = document.getElementById('loadingView');
     const contentView = document.getElementById('contentView');
-    loadingView.style.display = 'none';
-    contentView.style.display = 'block';
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get('code');
+
+    if (!code) {
+      loadingText.innerHTML = '❌ <span style="color:#c62828;">访问拒绝：链接中缺少必要的验证密钥。</span>';
+      return;
+    }
+
+    try {
+      // 1. 在 cloudflare-lovetest 表中精准查找带有当前 code 的链接记录
+      const { data, error } = await supabaseClient
+        .from('cloudflare-lovetest')
+        .select('*')
+        .ilike('链接', `%code=${code}%`)
+        .single();
+
+      if (error || !data) {
+        loadingText.innerHTML = '❌ <span style="color:#c62828;">链接无效或该密钥不存在。</span>';
+        return;
+      }
+
+      // 2. 检查是否已经核销
+      if (data.是否核销 === '已核销') {
+        loadingText.innerHTML = '⚠️ <span style="color:#c62828;">该密钥已经被使用过了，无法重复核销！</span>';
+        return;
+      }
+
+      // 3. 校验通过：更新状态为“已核销”，记录核销时间
+      const nowTime = new Date().toLocaleString();
+      await supabaseClient
+        .from('cloudflare-lovetest')
+        .update({ 
+          是否核销: '已核销', 
+          核销时间: nowTime 
+        })
+        .eq('id', data.id);
+
+      // 4. 验证成功，隐藏加载提示，展示测试界面
+      loadingView.style.display = 'none';
+      contentView.style.display = 'block';
+
+    } catch (err) {
+      console.error(err);
+      loadingText.innerHTML = '❌ <span style="color:#c62828;">网络异常或系统开小差了，请稍后再试。</span>';
+    }
   });
 </script>
 </body>
