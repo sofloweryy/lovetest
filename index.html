@@ -569,8 +569,9 @@ button.submit-btn:active { transform: scale(0.98); }
     }, 3500);
 
     try {
+      // 核心修改：将表名从 codes 改为你的真实表名 cloudflare-lovetest
       const { data: codeRecords, error: fetchError } = await window.mySupabaseClient
-        .from('codes')
+        .from('cloudflare-lovetest')
         .select('*')
         .eq('code', currentCode)
         .limit(1);
@@ -644,7 +645,8 @@ button.submit-btn:active { transform: scale(0.98); }
 
     if (currentCode) {
       try {
-        await window.mySupabaseClient.from('codes').update({ 
+        // 核心修改：提交状态更新时也同步使用 cloudflare-lovetest 表
+        await window.mySupabaseClient.from('cloudflare-lovetest').update({ 
           status: 'used', 
           used_at: new Date().toISOString(),
           result: resultData
