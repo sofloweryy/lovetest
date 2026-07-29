@@ -167,16 +167,25 @@ label.question-title {
   line-height: 1.4;
 }
 
+/* 适配小屏的优化选择框样式 */
 select {
   width: 100%;
-  padding: 12px;
+  padding: 14px 16px;
   border: 1.5px solid var(--border-color);
-  border-radius: 12px;
+  border-radius: 14px;
   background-color: var(--accent-bg);
-  font-size: 14px;
+  font-size: 14.5px;
   color: var(--text-main);
   outline: none;
   font-weight: 600;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ff4d6d' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 16px;
+  padding-right: 40px;
 }
 
 .radio-group {
