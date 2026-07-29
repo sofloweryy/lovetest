@@ -262,22 +262,28 @@ button.submit-btn:active { transform: scale(0.98); }
   border-radius: 16px;
 }
 
+/* 第一行：昵称与人格 */
 .user-badge {
   font-size: 13px;
-  color: var(--text-sub);
+  color: #7a6570; /* 改为柔和的灰紫色，不再与红字撞色显突兀 */
   margin-bottom: 4px;
   font-weight: 500;
 }
-
-.user-badge span { color: #ff4d6d; font-weight: bold; }
-
-.match-target {
-  font-size: 15px;
-  color: var(--text-main);
-  font-weight: 700;
-  line-height: 1.4;
+.user-badge span { 
+  color: #594a52; /* 用户名字也用温和深色 */ 
+  font-weight: bold; 
 }
 
+/* 中间标签：适当放大一点并加粗 */
+.match-target-label {
+  font-size: 16px; /* 比原来略大 */
+  color: #3a3845;
+  font-weight: 800; /* 加粗 */
+  margin: 4px 0 2px 0;
+  letter-spacing: 0.5px;
+}
+
+/* 第三行：命中另一半的心理/人格测算结果 */
 .match-target-highlight {
   color: #ff4d6d;
   font-size: 19px;
@@ -507,9 +513,9 @@ button.submit-btn:active { transform: scale(0.98); }
     <div id="result">
       <div class="share-card">
         <div class="poster-header">
-          <div class="user-badge"><span id="displayName" style="color: #ff4d6d; font-weight: bold;">某某</span> 的人格：<span id="userAttr">ENTJ × 狮子座</span></div>
+          <div class="user-badge"><span id="displayName" style="font-weight: bold;">某某</span> 的人格：<span id="userAttr">ENTJ × 狮子座</span></div>
+          <div class="match-target-label">本命配对</div>
           <div class="match-target">
-            本命配对
             <span class="match-target-highlight" id="targetType">INFP 调停者 × 双鱼座</span>
           </div>
         </div>
@@ -772,7 +778,7 @@ button.submit-btn:active { transform: scale(0.98); }
     const randomScore = (Math.random() * (99.8 - 93.2) + 93.2).toFixed(1);
     const randomSubText = scoreSubPool[Math.floor(Math.random() * scoreSubPool.length)];
 
-    const targetTypeStr = `${mbtiObj.type} × ${zodiacObj.trait}`; // 另一半的 mbti + 星座
+    const targetTypeStr = `${mbtiObj.type} × ${zodiacObj.trait}`;
 
     const desc0 = mbtiObj.baseDesc;
     const desc1 = zodiacObj.merit;
@@ -807,11 +813,11 @@ button.submit-btn:active { transform: scale(0.98); }
         await window.mySupabaseClient.from('cloudflare-lovetest').update({ 
           status: 'used', 
           used_at: beijingDate,
-          name: userName,         // 回传名字
-          mbti: mbti,             // 回传用户MBTI
-          zodiac: zodiac,         // 回传用户星座
-          target_type: targetTypeStr, // 👈 回传另一半的 MBTI + 星座到独立列
-          result: resultData      // 完整结果包
+          name: userName,
+          mbti: mbti,
+          zodiac: zodiac,
+          target_type: targetTypeStr,
+          result: resultData
         }).eq('code', currentCode);
       } catch (e) {}
     }
