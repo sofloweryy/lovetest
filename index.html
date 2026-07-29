@@ -167,8 +167,8 @@ label.question-title {
   line-height: 1.4;
 }
 
-/* 适配小屏的优化选择框样式 */
-select {
+/* 适配小屏的优化输入框与选择框样式 */
+input[type="text"], select {
   width: 100%;
   padding: 14px 16px;
   border: 1.5px solid var(--border-color);
@@ -178,6 +178,9 @@ select {
   color: var(--text-main);
   outline: none;
   font-weight: 600;
+}
+
+select {
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -433,6 +436,12 @@ button.submit-btn:active { transform: scale(0.98); }
       <h1>💖 测测命中另一半的星座与MBTI</h1>
       <p class="subtitle">全息星盘与人格交叉矩阵测算</p>
 
+      <!-- 新增：姓名/昵称输入框 -->
+      <div class="form-group">
+        <label class="question-title">你的姓名或昵称：</label>
+        <input type="text" id="userNameInput" placeholder="请输入你的名字或昵称">
+      </div>
+
       <div class="form-group">
         <label class="question-title">你的初始 MBTI 类型：</label>
         <select id="mbti">
@@ -500,7 +509,8 @@ button.submit-btn:active { transform: scale(0.98); }
     <div id="result">
       <div class="share-card">
         <div class="poster-header">
-          <div class="user-badge">我的人格：<span id="userAttr">ENTJ × 狮子座</span></div>
+          <!-- 结果页展示输入的姓名 -->
+          <div class="user-badge"><span id="displayName" style="color: #ff4d6d; font-weight: bold;">某某</span> 的人格：<span id="userAttr">ENTJ × 狮子座</span></div>
           <div class="match-target">
             命中另一半：
             <span class="match-target-highlight" id="targetType">INFP 调停者 × 双鱼座</span>
@@ -744,9 +754,11 @@ button.submit-btn:active { transform: scale(0.98); }
   });
 
   async function calculateMatch() {
+    const userName = document.getElementById('userNameInput').value.trim();
     const mbti = document.getElementById('mbti').value;
     const zodiac = document.getElementById('zodiac').value;
 
+    if (!userName) { alert('请先输入你的名字或昵称哦！'); return; }
     if (!mbti) { alert('请先选择你的 MBTI 类型哦！'); return; }
     if (!zodiac) { alert('请先选择你的太阳星座哦！'); return; }
 
@@ -769,6 +781,7 @@ button.submit-btn:active { transform: scale(0.98); }
     const desc3 = `互动温秘诀：${zodiacObj.suggestion}`;
 
     const resultData = {
+      userName: userName,
       userAttr: `${mbti} × ${zodiac}`,
       targetType: `${mbtiObj.type} × ${zodiacObj.trait}`,
       scoreNum: randomScore,
@@ -800,6 +813,9 @@ button.submit-btn:active { transform: scale(0.98); }
   }
 
   function renderResult(data) {
+    if (data.userName) {
+      document.getElementById('displayName').innerText = data.userName;
+    }
     document.getElementById('userAttr').innerText = data.userAttr;
     document.getElementById('targetType').innerText = data.targetType;
     document.getElementById('scoreNum').innerText = data.scoreNum + '%';
