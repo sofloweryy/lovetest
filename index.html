@@ -132,6 +132,22 @@ body {
   position: relative;
 }
 
+.top-badge-box {
+  background: var(--primary-gradient);
+  color: #fff;
+  font-size: 14.5px;
+  font-weight: bold;
+  padding: 10px 18px;
+  border-radius: 24px;
+  text-align: center;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 15px rgba(255, 77, 109, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
 h1 {
   font-size: 22px;
   background: var(--primary-gradient);
@@ -310,8 +326,17 @@ button.submit-btn:active { transform: scale(0.98); }
   align-items: center;
 }
 
-.footer-brand .brand-name { font-size: 12px; font-weight: bold; color: var(--text-main); }
-.footer-brand .brand-sub { font-size: 10px; color: #aaa; margin-top: 2px; }
+.footer-brand .brand-name {
+  font-size: 11.5px;
+  font-weight: bold;
+  color: var(--text-main);
+}
+.footer-brand .footer-sub { 
+  font-size: 10px; 
+  color: #aaa; 
+  margin-top: 2px; 
+  font-weight: normal;
+}
 
 .contact-btn {
   background: linear-gradient(135deg, #ff758f 0%, #ff4d6d 100%);
@@ -396,6 +421,9 @@ button.submit-btn:active { transform: scale(0.98); }
 
   <div id="contentView" style="display: none;">
     <div class="quiz-card" id="quizSection">
+      <div class="top-badge-box">
+        <span>🔮</span> 星座与MBTI·双重恋爱基因测算
+      </div>
       <h1>💖 测测命中另一半的星座与MBTI</h1>
       <p class="subtitle">192种全息星盘与人格交叉矩阵测算</p>
 
@@ -475,7 +503,7 @@ button.submit-btn:active { transform: scale(0.98); }
 
         <div class="score-badge">
           <div class="score-num" id="scoreNum">98.6%</div>
-          <div class="score-sub" id="scoreSubText">✨ 灵魂契合指数 · 命中注定的双向奔赴</div>
+          <div class="score-sub" id="scoreSubText">💞 灵魂契合指数 · 命中注定的双向奔赴</div>
         </div>
 
         <div class="analysis-list">
@@ -487,7 +515,7 @@ button.submit-btn:active { transform: scale(0.98); }
 
         <div class="poster-footer">
           <div class="footer-brand">
-            <div class="brand-name">星座与MBTI·双重恋爱基因测算</div>
+            <div class="brand-name">🔮 星座与MBTI·双重恋爱基因测算</div>
             <div class="footer-sub">仅供娱乐，如不雷同概不负责 (嘿嘿😊)</div>
           </div>
           <button class="contact-btn" onclick="showQRCode()">💬 此处有惊喜</button>
@@ -516,18 +544,18 @@ button.submit-btn:active { transform: scale(0.98); }
   const currentCode = urlParams.get('code');
 
   const scoreSubPool = [
-    "✨ 灵魂契合指数 · 命中注定的双向奔赴",
-    "💖 命定羁绊指数 · 走过千山万水终于等到你",
-    "🌟 磁场引力指数 · 银河系里最完美的磁场交错",
-    "🍯 心动共鸣指数 · 彼此眼底藏着星辰大海与温柔",
-    "🔥 浪漫热恋指数 · 把平淡岁月过成热烈偶像剧",
-    "💫 宿命交织指数 · 连灵魂的频率都分毫不差地吻合",
-    "🧸 偏爱指数 · 被坚定选择的极致安全感降临",
-    "🔮 缘分天定指数 · 跨越山海只为与你撞个满怀",
-    "🌙 星轨奇缘指数 · 两个孤单灵魂在宇宙中精准相认",
-    "💎 纯爱共振指数 · 历经千帆依然为你心动如初",
-    "🍀 幸运磁场指数 · 遇见你用光了我所有的好运",
-    "⚡ 电光石火指数 · 哪怕对视一眼空气里都全是甜味"
+    "💞 灵魂契合指数 · 命中注定的双向奔赴",
+    "💞 命定羁绊指数 · 走过千山万水终于等到你",
+    "💞 磁场引力指数 · 银河系里最完美的磁场交错",
+    "💞 心动共鸣指数 · 彼此眼底藏着星辰大海与温柔",
+    "💞 浪漫热恋指数 · 把平淡岁月过成热烈偶像剧",
+    "💞 宿命交织指数 · 连灵魂的频率都分毫不差地吻合",
+    "💞 偏爱指数 · 被坚定选择的极致安全感降临",
+    "💞 缘分天定指数 · 跨越山海只为与你撞个满怀",
+    "💞 星轨奇缘指数 · 两个孤单灵魂在宇宙中精准相认",
+    "💞 纯爱共振指数 · 历经千帆依然为你心动如初",
+    "💞 幸运磁场指数 · 遇见你用光了我所有的好运",
+    "💞 电光石火指数 · 哪怕对视一眼空气里都全是甜味"
   ];
 
   const mbtiTargetMap = {
@@ -769,7 +797,7 @@ button.submit-btn:active { transform: scale(0.98); }
     document.getElementById('userAttr').innerText = data.userAttr;
     document.getElementById('targetType').innerText = data.targetType;
     document.getElementById('scoreNum').innerText = data.scoreNum + '%';
-    document.getElementById('scoreSubText').innerText = data.scoreSubText || "✨ 灵魂契合指数 · 命中注定的双向奔赴";
+    document.getElementById('scoreSubText').innerText = data.scoreSubText || "💞 灵魂契合指数 · 命中注定的双向奔赴";
     document.getElementById('desc0').innerText = data.desc0;
     document.getElementById('desc1').innerText = data.desc1;
     document.getElementById('desc2').innerText = data.desc2;
