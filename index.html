@@ -32,7 +32,7 @@ body {
   flex-direction: column;
   align-items: center;
   min-height: 100vh;
-  padding: 4px 16px 32px 16px; /* 将顶部的 padding 从 8px 缩减到 4px */
+  padding: 4px 16px 32px 16px;
   position: relative;
   overflow-x: hidden;
 }
@@ -41,13 +41,13 @@ body {
   position: relative;
   width: 100%;
   max-width: 500px;
-  height: 24px; /* 缩减了装饰栏本身的高度 */
+  height: 24px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 12px;
   pointer-events: none;
-  margin-bottom: -2px; /* 负边距让下方卡片紧紧贴上来 */
+  margin-bottom: -2px;
 }
 
 .art-heart {
@@ -327,6 +327,13 @@ button.submit-btn:active { transform: scale(0.98); }
   align-items: center;
 }
 
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+}
+
 .footer-brand .brand-name {
   font-size: 11.5px;
   font-weight: bold;
@@ -520,7 +527,7 @@ button.submit-btn:active { transform: scale(0.98); }
         <div class="poster-footer">
           <div class="footer-brand">
             <div class="brand-name">🔮 星座与MBTI·双重恋爱基因测算</div>
-            <div class="footer-sub">仅供娱乐，如不雷同概不负责 (嘿嘿😊)</div>
+            <div class="footer-sub">仅供娱乐，如不雷同不负责（嘿嘿</div>
           </div>
           <button class="contact-btn" onclick="showQRCode()">💬 此处有惊喜</button>
         </div>
@@ -761,7 +768,7 @@ button.submit-btn:active { transform: scale(0.98); }
     const randomScore = (Math.random() * (99.8 - 93.2) + 93.2).toFixed(1);
     const randomSubText = scoreSubPool[Math.floor(Math.random() * scoreSubPool.length)];
 
-    const desc0 = `你的本命灵魂伴侣是【${mbtiObj.type} × ${zodiacObj.trait}】。TA拥有极其细腻温柔的内心世界与艺术般的美好想象力，能瞬间融化你外表的强硬。`;
+    const desc0 = `【${mbtiObj.type} × ${zodiacObj.trait}】拥有极其细腻温柔的内心世界与艺术般的美好想象力，能瞬间融化你外表的强硬。`;
     const desc1 = `刚柔并济的绝妙组合！你的雷厉风行能够给对方带来无与伦比的安全感，而对方的纯粹与温柔成了你卸下防备的柔软港湾。`;
     const desc2 = `避坑小提醒：不要用对待工作的高标准去苛求对方的情绪反应，多一些倾听与共情。`;
     const desc3 = `互动温秘诀：在安静的周末一起看看电影，听听音乐，享受一段不谈工作的纯粹慢时光。`;
