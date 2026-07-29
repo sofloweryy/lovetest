@@ -553,8 +553,8 @@ button.submit-btn:active { transform: scale(0.98); }
 
   window.mySupabaseClient = window.supabase.createClient(_SUPABASE_URL, _SUPABASE_ANON_KEY);
 
-  const urlParams = new URLSearchParams(window.location.search);
-  const currentCode = urlParams.get('code');
+  const pathSegments = window.location.pathname.split('/').filter(Boolean);
+  const currentCode = pathSegments[pathSegments.length - 1] || '';
 
   const scoreSubPool = [
     "💞 灵魂契合指数 · 命中注定的双向奔赴",
