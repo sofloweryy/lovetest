@@ -573,6 +573,7 @@ button.submit-btn:active { transform: scale(0.98); }
     "💞 电光石火指数 · 哪怕对视一眼空气里都全是甜味"
   ];
 
+  // 彻底清理干净，不带任何多余的前缀
   const mbtiTargetMap = {
     'INTJ': { type: 'ENFP 竞选者', baseDesc: '思维跳跃到外太空、眼睛里永远闪烁着好奇光芒的治愈系小太阳，擅长用最灿烂的笑容融化你高冷的外壳。' },
     'INTP': { type: 'ENTJ 指挥官', baseDesc: '自带强大御姐/霸总磁场的行动派，走路带风、雷厉风行，但在面对你时眼神会瞬间切换成专属的无限宠溺。' },
@@ -772,7 +773,7 @@ button.submit-btn:active { transform: scale(0.98); }
     const randomScore = (Math.random() * (99.8 - 93.2) + 93.2).toFixed(1);
     const randomSubText = scoreSubPool[Math.floor(Math.random() * scoreSubPool.length)];
 
-    // 修复：只保留基础描述，彻底切断外层重复拼接
+    // 拼装：严格只用 baseDesc 本身，不附加任何冗余前缀
     const desc0 = mbtiObj.baseDesc;
     const desc1 = zodiacObj.merit;
     const desc2 = `避坑小提醒：${zodiacObj.pitfall}`;
