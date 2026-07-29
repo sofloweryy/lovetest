@@ -531,7 +531,7 @@ button.submit-btn:active { transform: scale(0.98); }
         <div class="poster-footer">
           <div class="footer-brand">
             <div class="brand-name">星座与MBTI·双重恋爱基因测算</div>
-            <div class="footer-sub">仅供娱乐，如不雷同不负责(嘿嘿😁</div>
+            <div class="footer-sub">纯属娱乐，如不雷同概不负责(嘿嘿😁</div>
           </div>
           <button class="contact-btn" onclick="showQRCode()">💬 此处有惊喜</button>
         </div>
@@ -772,6 +772,7 @@ button.submit-btn:active { transform: scale(0.98); }
     const randomScore = (Math.random() * (99.8 - 93.2) + 93.2).toFixed(1);
     const randomSubText = scoreSubPool[Math.floor(Math.random() * scoreSubPool.length)];
 
+    // 修复：只保留基础描述，彻底切断外层重复拼接
     const desc0 = mbtiObj.baseDesc;
     const desc1 = zodiacObj.merit;
     const desc2 = `避坑小提醒：${zodiacObj.pitfall}`;
