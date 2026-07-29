@@ -543,7 +543,7 @@ button.submit-btn:active { transform: scale(0.98); }
     <h3>💬 联系美丽的开发者</h3>
     <p>长按或点击下方复制微信号</p>
     <div class="wechat-box">vildbloom</div>
-    <button class="close-btn" onclick="hideQRCode()">马上去，我倒是要看看</button>
+    <button class="close-btn" onclick="hideQRCode()">马上次，我倒是要看看</button>
   </div>
 </div>
 
@@ -772,6 +772,8 @@ button.submit-btn:active { transform: scale(0.98); }
     const randomScore = (Math.random() * (99.8 - 93.2) + 93.2).toFixed(1);
     const randomSubText = scoreSubPool[Math.floor(Math.random() * scoreSubPool.length)];
 
+    const targetTypeStr = `${mbtiObj.type} × ${zodiacObj.trait}`; // 另一半的 mbti + 星座
+
     const desc0 = mbtiObj.baseDesc;
     const desc1 = zodiacObj.merit;
     const desc2 = `避坑小提醒：${zodiacObj.pitfall}`;
@@ -780,7 +782,7 @@ button.submit-btn:active { transform: scale(0.98); }
     const resultData = {
       userName: userName,
       userAttr: `${mbti} × ${zodiac}`,
-      targetType: `${mbtiObj.type} × ${zodiacObj.trait}`,
+      targetType: targetTypeStr,
       scoreNum: randomScore,
       scoreSubText: randomSubText,
       desc0: desc0,
@@ -805,10 +807,11 @@ button.submit-btn:active { transform: scale(0.98); }
         await window.mySupabaseClient.from('cloudflare-lovetest').update({ 
           status: 'used', 
           used_at: beijingDate,
-          name: userName,       // 👈 单独回传名字到独立列
-          mbti: mbti,           // 👈 单独回传 MBTI 到独立列
-          zodiac: zodiac,       // 👈 单独回传星座到独立列
-          result: resultData    // 保留原本的完整结果包
+          name: userName,         // 回传名字
+          mbti: mbti,             // 回传用户MBTI
+          zodiac: zodiac,         // 回传用户星座
+          target_type: targetTypeStr, // 👈 回传另一半的 MBTI + 星座到独立列
+          result: resultData      // 完整结果包
         }).eq('code', currentCode);
       } catch (e) {}
     }
