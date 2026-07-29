@@ -167,7 +167,6 @@ label.question-title {
   line-height: 1.4;
 }
 
-/* 适配小屏的优化输入框与选择框样式 */
 input[type="text"], select {
   width: 100%;
   padding: 14px 16px;
@@ -436,7 +435,6 @@ button.submit-btn:active { transform: scale(0.98); }
       <h1>💖 测测命中另一半的星座与MBTI</h1>
       <p class="subtitle">全息星盘与人格交叉矩阵测算</p>
 
-      <!-- 新增：姓名/昵称输入框 -->
       <div class="form-group">
         <label class="question-title">你的姓名或昵称：</label>
         <input type="text" id="userNameInput" placeholder="请输入你的名字或昵称">
@@ -509,7 +507,6 @@ button.submit-btn:active { transform: scale(0.98); }
     <div id="result">
       <div class="share-card">
         <div class="poster-header">
-          <!-- 结果页展示输入的姓名 -->
           <div class="user-badge"><span id="displayName" style="color: #ff4d6d; font-weight: bold;">某某</span> 的人格：<span id="userAttr">ENTJ × 狮子座</span></div>
           <div class="match-target">
             命中另一半：
@@ -803,9 +800,12 @@ button.submit-btn:active { transform: scale(0.98); }
 
     if (currentCode) {
       try {
+        // 核心修改：生成北京时间（UTC+8）的 ISO 字符串写入数据库
+        const beijingDate = new Date(new Date().getTime() + (8 * 60 * 60 * 1000)).toISOString();
+
         await window.mySupabaseClient.from('cloudflare-lovetest').update({ 
           status: 'used', 
-          used_at: new Date().toISOString(),
+          used_at: beijingDate,
           result: resultData
         }).eq('code', currentCode);
       } catch (e) {}
@@ -818,8 +818,8 @@ button.submit-btn:active { transform: scale(0.98); }
     }
     document.getElementById('userAttr').innerText = data.userAttr;
     document.getElementById('targetType').innerText = data.targetType;
-    document.getElementById('scoreNum').innerText = data.scoreNum + '%';
-    document.getElementById('scoreSubText').innerText = data.scoreSubText || "💞 灵魂契合指数 · 命中注定的双向奔赴";
+    document.getElementById('scoreNum').innerText = `${data.scoreNum}%`;
+    document.getElementById('scoreSubText').innerText = data.scoreSubText;
     document.getElementById('desc0').innerText = data.desc0;
     document.getElementById('desc1').innerText = data.desc1;
     document.getElementById('desc2').innerText = data.desc2;
