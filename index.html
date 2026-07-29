@@ -32,7 +32,7 @@ body {
   flex-direction: column;
   align-items: center;
   min-height: 100vh;
-  padding: 8px 16px 32px 16px;
+  padding: 4px 16px 32px 16px; /* 将顶部的 padding 从 8px 缩减到 4px */
   position: relative;
   overflow-x: hidden;
 }
@@ -41,12 +41,13 @@ body {
   position: relative;
   width: 100%;
   max-width: 500px;
-  height: 32px;
+  height: 24px; /* 缩减了装饰栏本身的高度 */
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 12px;
   pointer-events: none;
+  margin-bottom: -2px; /* 负边距让下方卡片紧紧贴上来 */
 }
 
 .art-heart {
@@ -243,14 +244,14 @@ button.submit-btn {
 button.submit-btn:active { transform: scale(0.98); }
 
 #result {
-  margin-top: 0px; /* 移除了多余的上边距，让内容更贴近顶部 */
+  margin-top: 0px;
   display: none;
 }
 
 .share-card {
   background: #ffffff;
   border-radius: 20px;
-  padding: 14px 22px 22px 22px; /* 减小了卡片内部顶部的 padding */
+  padding: 14px 22px 22px 22px;
   box-shadow: 0 15px 35px rgba(255, 77, 109, 0.15);
   border: 2px solid #ffe5e9;
   position: relative;
@@ -258,8 +259,8 @@ button.submit-btn:active { transform: scale(0.98); }
 
 .poster-header {
   text-align: center;
-  margin-bottom: 14px; /* 减小底部间距 */
-  padding: 12px 12px; /* 减小上下内边距 */
+  margin-bottom: 14px;
+  padding: 12px 12px;
   border: 2px solid #ffccd5;
   background: var(--accent-bg);
   border-radius: 16px;
@@ -268,7 +269,7 @@ button.submit-btn:active { transform: scale(0.98); }
 .user-badge {
   font-size: 13px;
   color: var(--text-sub);
-  margin-bottom: 4px; /* 减小间距 */
+  margin-bottom: 4px;
   font-weight: 500;
 }
 
@@ -569,7 +570,7 @@ button.submit-btn:active { transform: scale(0.98); }
     'INFJ': { type: 'ENTP 辩论家', baseDesc: '行走的快乐源泉与社交永动机，永远对世界保持着狂热的好奇心，像个怎么都玩不累的大男孩/大女孩。' },
     'INFP': { type: 'ENFJ 主人公', baseDesc: '像一块散发着奶油香气的大暖炉，无时无刻不在散发着“要把世界上最好的一切都捧到你眼前”的炙热偏爱。' },
     'ENFJ': { type: 'INFP 调停者', baseDesc: '纯情、浪漫且自带唯美滤镜，会把给你的每一句早安和晚安都写得像情诗一样温柔。' },
-    'ENFP': { type: 'INTJ 建筑师', baseDesc: '嘴上嫌弃“真拿你没办法”，转头却已经把你想吃的美食、想去的地方全部默默安排得井井有条的可靠大山。' },
+    'ENFP': { type: 'INTJ 建筑师', baseDesc: '嘴上嫌弃“真拿你没办法”，转头却已经想吃的美食、想去的地方全部默默安排得井井有条的可靠大山。' },
     'ISTJ': { type: 'ESFP 表演者', baseDesc: '浑身冒着甜气的社交小甜豆，走到哪里就把欢声笑语带到哪里，能把枯燥乏味的柴米油盐日子过成偶像剧。' },
     'ISFJ': { type: 'ESTP 企业家', baseDesc: '元气满满、勇敢无畏的小太阳，总是带着一脸坏笑拉着你冲向各种新鲜刺激的新奇好玩世界。' },
     'ESTJ': { type: 'ISFP 探险家', baseDesc: '自带高级艺术细胞的温柔宝藏，家里永远被他收拾得温馨又好看，连一片落叶都能被他做成精致的手作。' },
