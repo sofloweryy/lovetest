@@ -243,19 +243,10 @@ button.submit-btn:active { transform: scale(0.98); }
 .poster-header {
   text-align: center;
   margin-bottom: 16px;
-  padding-bottom: 14px;
-  border-bottom: 1.5px dashed var(--border-color);
-}
-
-.poster-tag {
-  display: inline-block;
-  background: var(--primary-gradient);
-  color: #fff;
-  padding: 4px 14px;
-  border-radius: 18px;
-  font-size: 11.5px;
-  font-weight: 800;
-  margin-bottom: 10px;
+  padding: 18px 12px;
+  border: 2px solid #ffccd5;
+  background: var(--accent-bg);
+  border-radius: 16px;
 }
 
 .user-badge {
@@ -268,7 +259,7 @@ button.submit-btn:active { transform: scale(0.98); }
 .user-badge span { color: #ff4d6d; font-weight: bold; }
 
 .match-target {
-  font-size: 16px;
+  font-size: 15px;
   color: var(--text-main);
   font-weight: 700;
   line-height: 1.5;
@@ -276,7 +267,7 @@ button.submit-btn:active { transform: scale(0.98); }
 
 .match-target-highlight {
   color: #ff4d6d;
-  font-size: 20px;
+  font-size: 19px;
   display: block;
   margin-top: 4px;
   font-weight: 900;
@@ -313,20 +304,20 @@ button.submit-btn:active { transform: scale(0.98); }
 
 .poster-footer {
   padding-top: 14px;
-  border-top: 1.5px solid #f0f0f5;
+  border-top: 1.5px dashed var(--border-color);
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
 .footer-brand .brand-name { font-size: 12px; font-weight: bold; color: var(--text-main); }
-.footer-brand .brand-sub { font-size: 10px; color: #aaa; }
+.footer-brand .brand-sub { font-size: 10px; color: #aaa; margin-top: 2px; }
 
 .contact-btn {
   background: linear-gradient(135deg, #ff758f 0%, #ff4d6d 100%);
   color: #fff;
   font-size: 11.5px;
-  padding: 6px 14px;
+  padding: 8px 16px;
   border-radius: 16px;
   font-weight: bold;
   cursor: pointer;
@@ -475,7 +466,6 @@ button.submit-btn:active { transform: scale(0.98); }
     <div id="result">
       <div class="share-card">
         <div class="poster-header">
-          <span class="poster-tag">🔮 星座与MBTI · 192种双向全息矩阵测算</span>
           <div class="user-badge">我的人格：<span id="userAttr">ENTJ × 狮子座</span></div>
           <div class="match-target">
             命中另一半：
@@ -497,8 +487,8 @@ button.submit-btn:active { transform: scale(0.98); }
 
         <div class="poster-footer">
           <div class="footer-brand">
-            <div class="brand-name">测测命中另一半的星座与MBTI</div>
-            <div class="brand-sub">192种组合各不相同，如不雷同纯属命中注定</div>
+            <div class="brand-name">星座与MBTI·双重恋爱基因测算</div>
+            <div class="footer-sub">仅供娱乐，如不雷同概不负责 (嘿嘿😊)</div>
           </div>
           <button class="contact-btn" onclick="showQRCode()">💬 此处有惊喜</button>
         </div>
@@ -525,7 +515,6 @@ button.submit-btn:active { transform: scale(0.98); }
   const urlParams = new URLSearchParams(window.location.search);
   const currentCode = urlParams.get('code');
 
-  // 1. 缘分引力副标题池 (12种风格)
   const scoreSubPool = [
     "✨ 灵魂契合指数 · 命中注定的双向奔赴",
     "💖 命定羁绊指数 · 走过千山万水终于等到你",
@@ -541,7 +530,6 @@ button.submit-btn:active { transform: scale(0.98); }
     "⚡ 电光石火指数 · 哪怕对视一眼空气里都全是甜味"
   ];
 
-  // 2. 16种 MBTI 另一半核心职业/人格映射表
   const mbtiTargetMap = {
     'INTJ': { type: 'ENFP 竞选者', baseDesc: '思维跳跃到外太空、眼睛里永远闪烁着好奇光芒的治愈系小太阳，擅长用最灿烂的笑容融化你高冷的外壳。' },
     'INTP': { type: 'ENTJ 指挥官', baseDesc: '自带强大御姐/霸总磁场的行动派，走路带风、雷厉风行，但在面对你时眼神会瞬间切换成专属的无限宠溺。' },
@@ -561,7 +549,6 @@ button.submit-btn:active { transform: scale(0.98); }
     'ESFP': { type: 'ISTJ 物流师', baseDesc: '稳重、专一且极其靠谱的长期主义代表，虽然嘴上不擅长说甜言蜜语，但所有的安全感都落实在每一个实际行动里。' }
   };
 
-  // 3. 12个星座专属恋爱细节文案微观库（让 12 个星座真正参与组合，组合总数达 192 种）
   const zodiacFlavorMap = {
     '白羊座': {
       trait: '白羊座',
@@ -736,18 +723,16 @@ button.submit-btn:active { transform: scale(0.98); }
       if (!answered) { alert(`还有未完成的题目哦！请检查第 ${i} 题。`); return; }
     }
 
-    // 192种全息组合动态拼接引擎
     const mbtiObj = mbtiTargetMap[mbti] || mbtiTargetMap['ESTP'];
     const zodiacObj = zodiacFlavorMap[zodiac] || zodiacFlavorMap['双鱼座'];
 
     const randomScore = (Math.random() * (99.8 - 93.2) + 93.2).toFixed(1);
     const randomSubText = scoreSubPool[Math.floor(Math.random() * scoreSubPool.length)];
 
-    // 拼装 4 大核心维度的具象化结论
-    const desc0 = `对方是 ${mbtiObj.type} 搭配 ${zodiacObj.trait}。${mbtiObj.baseDesc}同时兼具${zodiacObj.trait}独有的特点：${zodiacObj.motto}。`;
-    const desc1 = zodiacObj.merit;
-    const desc2 = zodiacObj.pitfall;
-    const desc3 = zodiacObj.suggestion;
+    const desc0 = `你的本命灵魂伴侣是【${mbtiObj.type} × ${zodiacObj.trait}】。TA拥有极其细腻温柔的内心世界与艺术般的美好想象力，能瞬间融化你外表的强硬。`;
+    const desc1 = `刚柔并济的绝妙组合！你的雷厉风行能够给对方带来无与伦比的安全感，而对方的纯粹与温柔成了你卸下防备的柔软港湾。`;
+    const desc2 = `避坑小提醒：不要用对待工作的高标准去苛求对方的情绪反应，多一些倾听与共情。`;
+    const desc3 = `互动温秘诀：在安静的周末一起看看电影，听听音乐，享受一段不谈工作的纯粹慢时光。`;
 
     const resultData = {
       userAttr: `${mbti} × ${zodiac}`,
