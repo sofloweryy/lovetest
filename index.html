@@ -805,7 +805,10 @@ button.submit-btn:active { transform: scale(0.98); }
         await window.mySupabaseClient.from('cloudflare-lovetest').update({ 
           status: 'used', 
           used_at: beijingDate,
-          result: resultData
+          name: userName,       // 👈 单独回传名字到独立列
+          mbti: mbti,           // 👈 单独回传 MBTI 到独立列
+          zodiac: zodiac,       // 👈 单独回传星座到独立列
+          result: resultData    // 保留原本的完整结果包
         }).eq('code', currentCode);
       } catch (e) {}
     }
