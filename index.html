@@ -800,7 +800,6 @@ button.submit-btn:active { transform: scale(0.98); }
 
     if (currentCode) {
       try {
-        // 核心修改：生成北京时间（UTC+8）的 ISO 字符串写入数据库
         const beijingDate = new Date(new Date().getTime() + (8 * 60 * 60 * 1000)).toISOString();
 
         await window.mySupabaseClient.from('cloudflare-lovetest').update({ 
@@ -816,14 +815,30 @@ button.submit-btn:active { transform: scale(0.98); }
     if (data.userName) {
       document.getElementById('displayName').innerText = data.userName;
     }
-    document.getElementById('userAttr').innerText = data.userAttr;
-    document.getElementById('targetType').innerText = data.targetType;
-    document.getElementById('scoreNum').innerText = `${data.scoreNum}%`;
-    document.getElementById('scoreSubText').innerText = data.scoreSubText;
-    document.getElementById('desc0').innerText = data.desc0;
-    document.getElementById('desc1').innerText = data.desc1;
-    document.getElementById('desc2').innerText = data.desc2;
-    document.getElementById('desc3').innerText = data.desc3;
+    if (data.userAttr) {
+      document.getElementById('userAttr').innerText = data.userAttr;
+    }
+    if (data.targetType) {
+      document.getElementById('targetType').innerText = data.targetType;
+    }
+    if (data.scoreNum) {
+      document.getElementById('scoreNum').innerText = data.scoreNum + '%';
+    }
+    if (data.scoreSubText) {
+      document.getElementById('scoreSubText').innerText = data.scoreSubText;
+    }
+    if (data.desc0) {
+      document.getElementById('desc0').innerText = data.desc0;
+    }
+    if (data.desc1) {
+      document.getElementById('desc1').innerText = data.desc1;
+    }
+    if (data.desc2) {
+      document.getElementById('desc2').innerText = data.desc2;
+    }
+    if (data.desc3) {
+      document.getElementById('desc3').innerText = data.desc3;
+    }
   }
 </script>
 </body>
